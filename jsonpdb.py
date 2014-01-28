@@ -2,11 +2,11 @@ import inspect, operator
 import urllib
 import re
 import logging
+import webapp2
 
 from django.utils import simplejson as json
 from google.appengine.ext import db
 from google.appengine.api import users
-from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 def createEntity(className, jsonObj):
@@ -35,20 +35,21 @@ def createEntity(className, jsonObj):
         
     return objEntity
 
-class MainPage(webapp.RequestHandler):
+class MainPage(webapp2.RequestHandler):
   def get(self):
     self.redirect("index.html")
 
-class Add(webapp.RequestHandler):
-  def post(self):
+class Add(webapp2.RequestHandler):
+  def get(self):
+    logging.debug('add being done')
     if self.request.get('jsonp') and len(self.request.GET.keys()) >= 2:
-        className = str(self.request.get.keys()[0])
+        className = str(self.request.GET.keys()[0])
         jsonStr = urllib.unquote(str(self.request.get(className)))
         jsonObj = json.loads(jsonStr)
         objEntity = createEntity(className, jsonObj)
         self.response.out.write(self.request.get('jsonp') + "(\"" + str(objEntity.put()) + "\");")
 
-class Get(webapp.RequestHandler):
+class Get(webapp2.RequestHandler):
   def get(self):
     
     if self.request.get('jsonp') and len(self.request.GET.keys()) >= 2:
@@ -98,13 +99,14 @@ class Get(webapp.RequestHandler):
             
             self.response.out.write(str(self.request.get('jsonp')) + "(" + json.dumps(objArr) + ");")
 
-application = webapp.WSGIApplication(
+application = webapp2.WSGIApplication(
                                      [('/', MainPage),
                                       ('/add', Add),
                                       ('/get', Get)],
                                      debug=True)
 
 def main():
+  logging.debug('main()')
   run_wsgi_app(application)
 
 if __name__ == "__main__":

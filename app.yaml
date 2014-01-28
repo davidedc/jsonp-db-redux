@@ -1,7 +1,12 @@
 application: jsonpdb
-version: 3
-runtime: python
+version: 1
 api_version: 1
+runtime: python27
+threadsafe: false
+
+libraries:
+- name: django
+  version: "1.2"
 
 handlers:
 - url: /index.html
