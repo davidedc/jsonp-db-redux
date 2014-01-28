@@ -1,0 +1,273 @@
+<!doctype html> 
+<html>
+    <head>
+    <title>JSON-P DB</title>
+    <style type="text/css">
+      td { vertical-align :top }
+      tr { }
+     .rowTitle { font-weight : bold; display: block; margin-top: 10px; }
+      body { text-align: center; font-family: Geneva, Lucida Sans, Lucida Grande, Lucida Sans Unicode, calibri, Verdana, sans-serif ; background: url(http://paulirish.com/stripe.png) fixed;}
+      #page { width: 875px; text-align: left; margin: 0 auto; background:white;padding : 20px 15px; -moz-border-radius: 20px; }
+
+      h1,h2,h3,h4,h5 { font-family: 'Clarendon Std', cambria, 'Century Old Style Std', 'Century Schoolbook', Georgia, serif; color: #21630D;}
+      h3 { margin: 25px 0 5px;}
+		  h4 { margin: 29px 0 8px; background: #efefef;}
+		  h3 + h4 { margin-top: 10px;}
+      .mainTable {
+      
+      }
+      a { background: #21630D; color: white; text-decoration:none; }
+      a:hover { background: white; color: #21630D ;}
+      pre,textarea,tt,code { font-family: Consolas, Lucida Console, Monaco, monospace;}
+      textarea {background-color:#444;color:white; font-size: 80%; height:65px;  width:700px;-moz-border-radius: 7px; background: url('http://paulirish.com/textareagrad.png');}
+      button { margin-top: 19px; }
+      strong { }
+      strong,code{ display:block; margin-bottom: 9px;}
+      strong i { color:#4163BA; font-family:monospace; font-size:118%; font-style:normal; }
+      code { color: #555; }
+      
+      code em { display:block;}
+      code small { font-family: calibri, helvetica, arial;}
+      b { display : block; margin-top: 4px; font-size: 90%; color: ;}
+      li strong { display: inline; margin: 0;}
+      strong small { font-weight: normal;}
+      p { margin: 0px 0 7px; font-size: 80%;}
+      tr.response > td:first-child { padding-left: 30px;}
+      tr.response   textarea { width: 670px;}
+      
+    </style>
+    </head>
+    
+    
+    <body>
+      
+    <div id="page">  
+
+    <h1>JSON-P DB</h1>
+ 
+ <p style="background:hsl(150, 50%, 90%); border:1px solid hsl(150, 50%, 40%); padding: 20px;">This project is abandoned. I would suggest something like.. <a href="http://getcloudkit.com/">getcloudkit.com</a> or <a href="http://openkeyval.org/">OpenKeyval</a>. thxx! ~paul irish. 2011.10.20</p>
+	
+    <p id="description">
+    JSON-P DB utilizes Google App Engine's datastore in order to provide a persistent warehouse for arbitrary JSON objects that are made easily accessible from client-side javascript code via <a href="http://www.json.com/2007/12/24/jsonp-header-transfer-proposal/">JSON-P</a>.
+    </p>
+ 
+	<h2>API</h2>
+
+  <h4>Storing data</h4>
+
+  <strong>http://jsonpdb.appspot.com/add?<i>storeKey</i>=<i>jsonObj</i>&callback=<i>callbackFunc</i> </strong>
+  
+  <b>Example:</b><code> http://jsonpdb.appspot.com/add?myFoo={"foo":"bar","baz":9}&callback=func</code>
+
+  <b>Response:</b> <code>func('agNpZWRyDQsSB2NvbnRhY3QYAQw'); <small> (item key is unique to this object)</small></code>
+  
+
+
+  <h4>Retrieve by item key</h4>
+  
+  <strong>http://jsonpdb.appspot.com/get?<i>storeKey</i>=<i>itemKey</i>&callback=<i>callbackFunc</i></strong>
+  <b>Example:</b>
+  <code>http://jsonpdb.appspot.com/get?myFoo=agNpZWRyDQsSB2NvbnRhY3QYAQw&callback=func</code>
+  <b>Response:</b> <code>func({"foo":"bar","baz":9});</code>
+
+
+  <h4>Retrieve all items by storeKey</h4>
+  <p>Pass an empty object.</p>
+  <strong>http://jsonpdb.appspot.com/get?<i>storeKey</i>={}&callback=<i>callbackFunc</i></strong>
+  <b>Example:</b>
+  <code>http://jsonpdb.appspot.com/get?myFoo={}&callback=func</code>
+  <b>Response:</b> <code>func([{"foo":"bar","baz":9},{"foo":"bar2","baz":10}]);</code>
+
+
+  <h4>Retrieve specific items by query and storeKey</h4>
+  <p>Pass an object that to match against. </p> 
+  <strong>http://jsonpdb.appspot.com/get?<i>storeKey</i>=<i>jsonObjToMatch</i>&callback=<i>callbackFunc</i></strong>
+  <b>Example</b>
+  <code>http://jsonpdb.appspot.com/get?myFoo={"foo":"bar2"}&callback=func</code>
+  <b>Response:</b> <code>func([{"foo":"bar2","baz":10}]);</code>
+
+
+	<h2>Demo</h2>
+
+    <table class="mainTable">
+        <tr>
+            <td><span class="rowTitle">Create an object</span></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td> 
+            <textarea id="step1" rows="5" cols="45"  style="height: 33px;">contact = {
+  name : "Jesper",
+  age : 22,
+  phone : ["555-0100", "555-0120"]
+}</textarea>
+			</td>
+			<td><input type="button" id="eval1" value="eval()" /></td>
+		</tr>
+		<tr>
+            <td width="200"><span class="rowTitle">Store your object:</span> </td>
+        	<td></td>
+        </tr>
+        <tr>
+            <td>  <textarea id="step2" rows="4" cols="45" >$.getJSON('http://jsonpdb.appspot.com/add?contact='+JSON.stringify(contact)+'&jsonp=?', function(data){    $("#step2response").val(data);
+});</textarea>
+           </td>
+			<td><input type="button" id="eval2" value="eval()" /></td>
+		</tr>
+		<tr>
+			<td>Response:<br><textarea id="step2response" rows="1" cols="45"></textarea></td>
+			<td></td>
+		</tr>
+		<tr>
+            <td><span class="rowTitle">Retrieve your object by key:</span></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>  <textarea id="step3" style="height: 82px;" >$.getJSON("http://jsonpdb.appspot.com/get?contact="+$("#step2response").val()+"&jsonp=?", function(data){
+  $("#step3response").val(JSON.stringify(data));
+});</textarea>
+           </td>
+			<td><input type="button" id="eval3" value="eval()" /></td>
+        </tr>
+        <tr>
+        	<td>Response:<br><textarea id="step3response" rows="3" cols="45"></textarea>
+			</td><td></td>
+		</tr>
+		<tr>
+            <td><span class="rowTitle">Retrieve all objects of a specific type:</span> </td>
+            <td></td>
+        <tr>
+            <td>  <textarea id="step4" rows="4" cols="45" >$.getJSON('http://jsonpdb.appspot.com/get?contact=*&jsonp=?', function(data){
+  $("#step4response").val(JSON.stringify(data));
+});</textarea>
+           </td>
+			<td><input type="button" id="eval4" value="eval()" /></td>
+        </tr>
+        <tr>
+        	<td>Response:<br><textarea id="step4response" rows="5" cols="45"></textarea>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+            <td><span class="rowTitle">Retrieve based on criteria:</span></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>  <textarea id="step5"  style="height: 82px;" >$.getJSON('http://jsonpdb.appspot.com/get?contact={"name":"Cherokee"}&jsonp=?', function(data){
+  $("#step5response").val(JSON.stringify(data));
+});</textarea>
+           </td>
+			<td><input type="button" id="eval5" value="eval()" /></td>
+        </tr>
+        <tr>
+        	<td>Response:<br><textarea id="step5response" rows="5" cols="45"></textarea>
+        	<td></td>
+    	</tr>
+    </table>
+
+    
+    
+    <h2>Did we mention... ?</h2>
+
+<ol>
+<li>  Anyone can access this datastore.  That means that anyone can read the objects you've created as long as they know your object's name.</li>
+<li>The name of the first parameter of the GET request must always be the object's storeKey.</li>
+<li>storeKey's should be alphanumberic, but . is also allowed</li>
+<li>  Querying for a set of objects will only work on that object's 1st level parameters.  That means that if you have an object named "contact" you can search based on contact.country but NOT contact.country.city</li>
+<li>The amount of data is limited by how long the URL can be. This <a href="http://www.boutell.com/newfaq/misc/urllength.html">varies by browser</a>.
+</ol>
+
+<h2>So what?</h2>
+You could use this as...
+<ul>
+  <li>A persistent storage mechanism in your Greasemonkey scripts</li>
+  <li>A cross-domain messaging system</li>
+  <li>A database for javascript developers that can't do serverside work</li>
+  <li>A messageboard, forum, digg clone, wiki, blog, facebook-clone, whatever. </li>
+</ul>
+
+<h2>Who?</h2>
+<ul>
+  <li><strong> Adam Ribado: </strong>Architecture and Python.</li>
+  <li><strong> Paul Irish: </strong>Concept, HTML, and Javascript.</li>
+  <li> <a href="mailto:ied.datastore@gmail.com">ied.datastore@gmail.com</a></li>
+</ul>
+
+
+
+
+  
+<h3>Debug:</h5>
+<div>
+  <p>View the contents of: <input id="debugvalue" type="text"/><input type="button" value="go"/></p>
+  <textarea rows="5" cols="45"></textarea>
+  <span><button id="debugbutton">Visual View</button></span>
+</div>
+    
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+<script type="text/javascript" src="http://www.netgrow.com.au/assets/files/jquery_plugins/jquery.dump.js"></script>
+
+<script type="text/javascript">
+    
+
+function vizViewHandler(){
+  var resp = $(this).parents('tr,div').eq(0).find('textarea').val();
+  eval('window.vizvew = ' + resp);
+  $.dump(vizvew);
+}
+
+$(document).ready(function(){
+   
+   // hide and show response's
+   $('tr:contains(Response:)').addClass('response').hide().prev().find('input').click(function(){
+    $(this).parents('tr').next().fadeIn('fast');
+   });
+   
+   //debug area
+    $('#debugvalue').next().click(function(){
+      var textarea = $(this).parents('div:eq(0)').find('textarea');
+      $.getJSON('http://'+thedomain+'/get?'+ $('#debugvalue').val() +'=*&jsonp=?', function(data){
+       textarea.val(JSON.stringify(data));
+      });
+    });
+    $('#debugbutton').click(vizViewHandler);
+  
+    var thedomain = 'jsonpdb.appspot.com';
+    var local = 'localhost:8080';
+    if (document.location.hostname == 'localhost'){
+      $('textarea').each(function(i,el){
+        $(el).val(  $(el).val().replace(thedomain,local) );
+      });
+      thedomain = local;
+    }
+    
+    // setting up dummy data
+    var newperson = people[ Math.floor(people.length*Math.random()) ];
+    var newcontact = { name: newperson.first, age : Math.round(Math.random()*80), phone : [newperson.phone] };
+    newcontact.phone[1] = newperson.phone.replace(/[0-9][0-9]$/,Math.floor(Math.random()*100));
+    $('textarea#step1').val('contact = '+ JSON.stringify(newcontact) );
+    
+    $('textarea#step5').val( $('textarea#step5').val().replace('Cherokee',newcontact.name) );
+    
+    // adding visual view buttons
+    $('input[id^=eval]:gt(1)').click(function(){
+      var that = this;
+      setTimeout(function(){
+        $(that).parents('tr').next().find('td:last').html('<button>Visual View</button>').click(vizViewHandler);
+      },100);
+    });
+
+    // eval button hookups.
+    $([1, 2, 3, 4, 5,6]).each(function(i,n){
+      $("#eval"+n).click(function(){eval($("#step"+n).val());});
+    });
+    
+});
+
+var people = [{first:'Lee',last:'Michael',phone:'461-0898'},{first:'Burton',last:'Calhoun',phone:'220-6894'},{first:'Inga',last:'Chaney',phone:'465-9474'},{first:'Rogan',last:'Hogan',phone:'574-6643'},{first:'Owen',last:'Parrish',phone:'489-5054'},{first:'Imogene',last:'Dawson',phone:'784-1333'},{first:'Stewart',last:'Barron',phone:'383-0275'},{first:'Laurel',last:'Mcgowan',phone:'151-3459'},{first:'Celeste',last:'Garcia',phone:'765-8504'},{first:'Rose',last:'Wagner',phone:'637-1888'},{first:'Vernon',last:'Hanson',phone:'510-8635'},{first:'Harrison',last:'Avery',phone:'263-1412'},{first:'Anne',last:'Lewis',phone:'813-2150'},{first:'Lucius',last:'Reynolds',phone:'597-5090'},{first:'Dora',last:'Mckay',phone:'661-1635'},{first:'Justine',last:'Johnston',phone:'481-1965'},{first:'Jessica',last:'Mcknight',phone:'309-8439'},{first:'Ariana',last:'Ayers',phone:'562-9595'},{first:'Vivien',last:'Ray',phone:'462-9926'},{first:'Donovan',last:'Fitzgerald',phone:'918-9106'},{first:'Marny',last:'Paul',phone:'801-5722'},{first:'Burton',last:'White',phone:'772-0237'},{first:'Damian',last:'Keith',phone:'683-3795'},{first:'Kelly',last:'Woods',phone:'139-0809'},{first:'Lucy',last:'Peterson',phone:'642-0047'},{first:'Michelle',last:'Frost',phone:'965-9367'},{first:'Jessamine',last:'Barrett',phone:'755-4714'},{first:'Gannon',last:'Mcclain',phone:'212-4235'},{first:'Eliana',last:'Vega',phone:'708-8737'},{first:'Ina',last:'Sloan',phone:'429-0936'},{first:'Cade',last:'Macias',phone:'311-1244'},{first:'Wyoming',last:'House',phone:'646-4740'},{first:'Celeste',last:'Reeves',phone:'488-9747'},{first:'Wylie',last:'Mcneil',phone:'357-7859'},{first:'Jillian',last:'Barnes',phone:'999-7914'},{first:'Gail',last:'West',phone:'896-4872'},{first:'Camden',last:'Grimes',phone:'677-6364'},{first:'Emerald',last:'Nielsen',phone:'659-5822'},{first:'Quinn',last:'Curry',phone:'652-0612'},{first:'Deirdre',last:'Valentine',phone:'635-3759'},{first:'Gretchen',last:'Blankenship',phone:'217-4994'},{first:'Maggie',last:'Lynch',phone:'884-7839'},{first:'Josiah',last:'Phillips',phone:'178-1771'},{first:'Vance',last:'Terry',phone:'885-4516'},{first:'Heidi',last:'Austin',phone:'413-1616'},{first:'Ori',last:'Whitaker',phone:'306-1890'},{first:'Phelan',last:'Rosales',phone:'777-7886'},{first:'Cherokee',last:'Barry',phone:'294-1438'},{first:'Paul',last:'Gamble',phone:'409-2515'},{first:'Fletcher',last:'Torres',phone:'379-2729'},{first:'Tate',last:'Cameron',phone:'793-0322'},{first:'Sade',last:'Finch',phone:'462-2929'},{first:'Clare',last:'Wong',phone:'145-1867'},{first:'Leonard',last:'Long',phone:'487-6185'},{first:'Jaime',last:'Humphrey',phone:'166-0517'},{first:'Latifah',last:'Marsh',phone:'950-4664'},{first:'Anjolie',last:'Maldonado',phone:'921-4088'},{first:'Bert',last:'Keller',phone:'685-1136'},{first:'Brian',last:'Valentine',phone:'306-8235'},{first:'Chaim',last:'Munoz',phone:'548-9999'},{first:'Lucian',last:'Rush',phone:'930-8074'},{first:'Eugenia',last:'Randolph',phone:'461-0277'},{first:'Quamar',last:'Dawson',phone:'568-3263'},{first:'Callum',last:'Andrews',phone:'233-8448'},{first:'Sloane',last:'Carter',phone:'772-9391'},{first:'Sloane',last:'Meyer',phone:'650-6996'},{first:'Aristotle',last:'Guzman',phone:'576-6760'},{first:'Isadora',last:'Gonzalez',phone:'355-8577'},{first:'Berk',last:'England',phone:'732-0329'},{first:'Shannon',last:'Wright',phone:'251-5852'},{first:'Brandon',last:'Bolton',phone:'566-7439'},{first:'Byron',last:'Reese',phone:'519-4741'},{first:'Ursula',last:'Ballard',phone:'970-0405'},{first:'Abel',last:'Osborne',phone:'772-4045'},{first:'Kamal',last:'Middleton',phone:'912-9579'},{first:'Jana',last:'Jacobs',phone:'909-6377'},{first:'acqueline',last:'Lawrence',phone:'590-1404'},{first:'Ima',last:'Curry',phone:'532-9269'},{first:'Chloe',last:'Powell',phone:'650-1546'},{first:'Aquila',last:'Humphrey',phone:'863-0377'},{first:'Signe',last:'Branch',phone:'775-4534'},{first:'Clayton',last:'Waters',phone:'105-5874'},{first:'Madaline',last:'Harrell',phone:'646-6440'},{first:'Bryar',last:'Cervantes',phone:'909-8634'},{first:'Martina',last:'Giles',phone:'757-1348'},{first:'Veronica',last:'Solomon',phone:'964-1198'},{first:'Breanna',last:'Battle',phone:'243-4446'},{first:'Callum',last:'Barnes',phone:'813-6699'},{first:'Marcia',last:'Macdonald',phone:'468-4480'},{first:'Kelsie',last:'Ellis',phone:'858-8913'},{first:'Philip',last:'Fields',phone:'636-1738'},{first:'Brynn',last:'Wells',phone:'669-8094'},{first:'Ulric',last:'Kinney',phone:'412-7766'},{first:'Genevieve',last:'Wilkerson',phone:'638-6049'},{first:'Marcia',last:'Bray',phone:'890-3287'},{first:'Noelani',last:'Acevedo',phone:'611-5453'},{first:'Armand',last:'Webster',phone:'666-6518'},{first:'Heather',last:'Briggs',phone:'841-8455'},{first:'Bernard',last:'Miranda',phone:'391-2172'},{first:'Orli',last:'Hurley',phone:'124-1115'}];
+
+</script>
+    
+    </body>
+    </html>
