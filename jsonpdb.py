@@ -119,25 +119,19 @@ class WhenLastCleaned(webapp2.RequestHandler):
   def get(self):
     logging.info('WhenLastCleaned()')
     
-    if self.request.get('jsonp') and len(self.request.GET.keys()) >= 2:
-        logging.info('inside the if')
-        className = str(self.request.GET.keys()[0])
-        if str.lower(className) == "jsonp":
-            raise Exception("Expected JSON object name as first parameter.")
+    lastCleanedEntities = LastCleaned.all()
 
-        lastCleanedEntities = LastCleaned.all()
-
-        # there should be only one record,
-        # so this look is a little silly TODO
-        for ent in lastCleanedEntities:
-            objDict = dict()
-            for k in ent.__dict__["_entity"].keys():
-                logging.info('k: ' + k)
-                dateAndTimeAsString = str(ent.__dict__["_entity"][k])
-                objDict['resetTime'] = json.loads('"'+dateAndTimeAsString+'"')
-                objDict['currentTime'] = json.loads('"'+str(datetime.now())+'"')
-            self.response.out.write(str(self.request.get('jsonp')) + "(" + json.dumps(objDict) + ");")
-            return
+    # there should be only one record,
+    # so this looks a little silly TODO
+    for ent in lastCleanedEntities:
+        objDict = dict()
+        for k in ent.__dict__["_entity"].keys():
+            logging.info('k: ' + k)
+            dateAndTimeAsString = str(ent.__dict__["_entity"][k])
+            objDict['resetTime'] = json.loads('"'+dateAndTimeAsString+'"')
+            objDict['currentTime'] = json.loads('"'+str(datetime.now())+'"')
+        self.response.out.write(str(self.request.get('jsonp')) + "(" + json.dumps(objDict) + ");")
+        return
 
 
 class CleanAll(webapp2.RequestHandler):
