@@ -9,6 +9,10 @@ from google.appengine.ext import db
 from google.appengine.api import users
 from google.appengine.ext.webapp.util import run_wsgi_app
 
+
+class LastCleaned(db.Model):
+    lastCleaned = db.DateTimeProperty(auto_now=True)
+
 class EntitiesKinds(db.Model):
   theKind = db.StringProperty()
 
@@ -108,6 +112,31 @@ class Get(webapp2.RequestHandler):
             
             self.response.out.write(str(self.request.get('jsonp')) + "(" + json.dumps(objArr) + ");")
 
+class WhenLastCleaned(webapp2.RequestHandler):
+  def get(self):
+    logging.info('WhenLastCleaned()')
+    
+    if self.request.get('jsonp') and len(self.request.GET.keys()) >= 2:
+        logging.info('inside the if')
+        className = str(self.request.GET.keys()[0])
+        if str.lower(className) == "jsonp":
+            raise Exception("Expected JSON object name as first parameter.")
+
+        lastCleanedEntities = LastCleaned.all()
+
+        # there should be only one record,
+        # so this look is a little silly TODO
+        for ent in lastCleanedEntities:
+            objDict = dict()
+            for k in ent.__dict__["_entity"].keys():
+                logging.info('k: ' + k)
+                dateAndTimeAsString = str(ent.__dict__["_entity"][k])
+                logging.info('dateAndTimeAsString: ' + dateAndTimeAsString)
+                objDict[str(k)] = json.loads('"'+dateAndTimeAsString+'"')
+            self.response.out.write(str(self.request.get('jsonp')) + "(" + json.dumps(objDict) + ");")
+            return
+
+
 class CleanAll(webapp2.RequestHandler):
   def get(self):
 
@@ -127,13 +156,17 @@ class CleanAll(webapp2.RequestHandler):
     # kinds
     db.delete(allEntityKeys)
 
+    db.delete(LastCleaned.all())
+    LastCleaned().put()
+
     self.redirect("index.html")
 
 application = webapp2.WSGIApplication(
                                      [('/', MainPage),
                                       ('/add', Add),
                                       ('/get', Get),
-                                      ('/cleanAll', CleanAll)
+                                      ('/cleanAll', CleanAll),
+                                      ('/whenLastCleaned', WhenLastCleaned),
                                       ],
                                      debug=True)
 
