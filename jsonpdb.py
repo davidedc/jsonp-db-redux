@@ -9,6 +9,9 @@ from google.appengine.ext import db
 from google.appengine.api import users
 from google.appengine.ext.webapp.util import run_wsgi_app
 
+# only for cleanup mechanism
+from datetime import datetime
+
 
 class LastCleaned(db.Model):
     lastCleaned = db.DateTimeProperty(auto_now=True)
@@ -131,8 +134,8 @@ class WhenLastCleaned(webapp2.RequestHandler):
             for k in ent.__dict__["_entity"].keys():
                 logging.info('k: ' + k)
                 dateAndTimeAsString = str(ent.__dict__["_entity"][k])
-                logging.info('dateAndTimeAsString: ' + dateAndTimeAsString)
-                objDict[str(k)] = json.loads('"'+dateAndTimeAsString+'"')
+                objDict['resetTime'] = json.loads('"'+dateAndTimeAsString+'"')
+                objDict['currentTime'] = json.loads('"'+str(datetime.now())+'"')
             self.response.out.write(str(self.request.get('jsonp')) + "(" + json.dumps(objDict) + ");")
             return
 
