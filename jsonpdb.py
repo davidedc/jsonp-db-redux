@@ -3,11 +3,14 @@ import urllib
 import re
 import logging
 import webapp2
+import json
 
-from django.utils import simplejson as json
 from google.appengine.ext import db
 from google.appengine.api import users
 from google.appengine.ext.webapp.util import run_wsgi_app
+
+class EntitiesKinds(db.Model):
+  theKind = db.StringProperty()
 
 def createEntity(className, jsonObj):
     if className[0] == "_":
@@ -48,6 +51,12 @@ class Add(webapp2.RequestHandler):
         jsonObj = json.loads(jsonStr)
         objEntity = createEntity(className, jsonObj)
         self.response.out.write(self.request.get('jsonp') + "(\"" + str(objEntity.put()) + "\");")
+
+        entityKind = EntitiesKinds(theKind = className)
+        v = EntitiesKinds.all().filter('theKind =', className)
+        if not v.get():
+            entityKind = EntitiesKinds(theKind = className)
+            entityKind.put()
 
 class Get(webapp2.RequestHandler):
   def get(self):
@@ -99,10 +108,33 @@ class Get(webapp2.RequestHandler):
             
             self.response.out.write(str(self.request.get('jsonp')) + "(" + json.dumps(objArr) + ");")
 
+class CleanAll(webapp2.RequestHandler):
+  def get(self):
+
+    # first get all the kinds of the entities
+    allEntityKeys = EntitiesKinds.all()
+
+    # loop through the kinds and delete
+    # all entities of that kind
+    for entityKey in allEntityKeys:
+        theKind = str(entityKey.theKind)
+        objClass = type(theKind,(db.Model,),{})
+        query = objClass.all(keys_only=True)
+        entries =query.fetch(1000)
+        db.delete(entries)
+
+    # finally delete the table with all the
+    # kinds
+    db.delete(allEntityKeys)
+
+    self.redirect("index.html")
+
 application = webapp2.WSGIApplication(
                                      [('/', MainPage),
                                       ('/add', Add),
-                                      ('/get', Get)],
+                                      ('/get', Get),
+                                      ('/cleanAll', CleanAll)
+                                      ],
                                      debug=True)
 
 def main():

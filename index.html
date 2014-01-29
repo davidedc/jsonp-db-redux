@@ -55,9 +55,9 @@
 
   <h4>Storing data</h4>
 
-  <strong>http://jsonpdb.appspot.com/add?<i>storeKey</i>=<i>jsonObj</i>&callback=<i>callbackFunc</i> </strong>
+  <strong>http://localhost:8080/add?<i>storeKey</i>=<i>jsonObj</i>&callback=<i>callbackFunc</i> </strong>
   
-  <b>Example:</b><code> http://jsonpdb.appspot.com/add?myFoo={"foo":"bar","baz":9}&callback=func</code>
+  <b>Example:</b><code> http://localhost:8080/add?myFoo={"foo":"bar","baz":9}&callback=func</code>
 
   <b>Response:</b> <code>func('agNpZWRyDQsSB2NvbnRhY3QYAQw'); <small> (item key is unique to this object)</small></code>
   
@@ -65,25 +65,25 @@
 
   <h4>Retrieve by item key</h4>
   
-  <strong>http://jsonpdb.appspot.com/get?<i>storeKey</i>=<i>itemKey</i>&callback=<i>callbackFunc</i></strong>
+  <strong>http://localhost:8080/get?<i>storeKey</i>=<i>itemKey</i>&callback=<i>callbackFunc</i></strong>
   <b>Example:</b>
-  <code>http://jsonpdb.appspot.com/get?myFoo=agNpZWRyDQsSB2NvbnRhY3QYAQw&callback=func</code>
+  <code>http://localhost:8080/get?myFoo=agNpZWRyDQsSB2NvbnRhY3QYAQw&callback=func</code>
   <b>Response:</b> <code>func({"foo":"bar","baz":9});</code>
 
 
   <h4>Retrieve all items by storeKey</h4>
   <p>Pass an empty object.</p>
-  <strong>http://jsonpdb.appspot.com/get?<i>storeKey</i>={}&callback=<i>callbackFunc</i></strong>
+  <strong>http://localhost:8080/get?<i>storeKey</i>={}&callback=<i>callbackFunc</i></strong>
   <b>Example:</b>
-  <code>http://jsonpdb.appspot.com/get?myFoo={}&callback=func</code>
+  <code>http://localhost:8080/get?myFoo={}&callback=func</code>
   <b>Response:</b> <code>func([{"foo":"bar","baz":9},{"foo":"bar2","baz":10}]);</code>
 
 
   <h4>Retrieve specific items by query and storeKey</h4>
   <p>Pass an object that to match against. </p> 
-  <strong>http://jsonpdb.appspot.com/get?<i>storeKey</i>=<i>jsonObjToMatch</i>&callback=<i>callbackFunc</i></strong>
+  <strong>http://localhost:8080/get?<i>storeKey</i>=<i>jsonObjToMatch</i>&callback=<i>callbackFunc</i></strong>
   <b>Example</b>
-  <code>http://jsonpdb.appspot.com/get?myFoo={"foo":"bar2"}&callback=func</code>
+  <code>http://localhost:8080/get?myFoo={"foo":"bar2"}&callback=func</code>
   <b>Response:</b> <code>func([{"foo":"bar2","baz":10}]);</code>
 
 
@@ -109,7 +109,7 @@
         	<td></td>
         </tr>
         <tr>
-            <td>  <textarea id="step2" rows="4" cols="45" >$.getJSON('http://jsonpdb.appspot.com/add?contact='+JSON.stringify(contact)+'&jsonp=?', function(data){    $("#step2response").val(data);
+            <td>  <textarea id="step2" rows="4" cols="45" >$.getJSON('http://localhost:8080/add?contact='+JSON.stringify(contact)+'&jsonp=?', function(data){    $("#step2response").val(data);
 });</textarea>
            </td>
 			<td><input type="button" id="eval2" value="eval()" /></td>
@@ -123,7 +123,7 @@
             <td></td>
         </tr>
         <tr>
-            <td>  <textarea id="step3" style="height: 82px;" >$.getJSON("http://jsonpdb.appspot.com/get?contact="+$("#step2response").val()+"&jsonp=?", function(data){
+            <td>  <textarea id="step3" style="height: 82px;" >$.getJSON("http://localhost:8080/get?contact="+$("#step2response").val()+"&jsonp=?", function(data){
   $("#step3response").val(JSON.stringify(data));
 });</textarea>
            </td>
@@ -137,7 +137,7 @@
             <td><span class="rowTitle">Retrieve all objects of a specific type:</span> </td>
             <td></td>
         <tr>
-            <td>  <textarea id="step4" rows="4" cols="45" >$.getJSON('http://jsonpdb.appspot.com/get?contact=*&jsonp=?', function(data){
+            <td>  <textarea id="step4" rows="4" cols="45" >$.getJSON('http://localhost:8080/get?contact=*&jsonp=?', function(data){
   $("#step4response").val(JSON.stringify(data));
 });</textarea>
            </td>
@@ -153,7 +153,7 @@
             <td></td>
         </tr>
         <tr>
-            <td>  <textarea id="step5"  style="height: 82px;" >$.getJSON('http://jsonpdb.appspot.com/get?contact={"name":"Cherokee"}&jsonp=?', function(data){
+            <td>  <textarea id="step5"  style="height: 82px;" >$.getJSON('http://localhost:8080/get?contact={"name":"Cherokee"}&jsonp=?', function(data){
   $("#step5response").val(JSON.stringify(data));
 });</textarea>
            </td>
@@ -233,7 +233,7 @@ $(document).ready(function(){
     });
     $('#debugbutton').click(vizViewHandler);
   
-    var thedomain = 'jsonpdb.appspot.com';
+    var thedomain = 'localhost:8080';
     var local = 'localhost:8080';
     if (document.location.hostname == 'localhost'){
       $('textarea').each(function(i,el){
