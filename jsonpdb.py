@@ -119,19 +119,21 @@ class WhenLastCleaned(webapp2.RequestHandler):
   def get(self):
     logging.info('WhenLastCleaned()')
     
-    lastCleanedEntities = LastCleaned.all()
+    # just gets the first entity as there should be
+    # only one. all() only constructs the query
+    # fetching all entities. Get() then actually
+    # runs the query and fetches the first entity
+    # only.
+    ent = LastCleaned.all().get()
 
-    # there should be only one record,
-    # so this looks a little silly TODO
-    for ent in lastCleanedEntities:
-        objDict = dict()
-        for k in ent.__dict__["_entity"].keys():
-            logging.info('k: ' + k)
-            dateAndTimeAsString = str(ent.__dict__["_entity"][k])
-            objDict['resetTime'] = json.loads('"'+dateAndTimeAsString+'"')
-            objDict['currentTime'] = json.loads('"'+str(datetime.now())+'"')
-        self.response.out.write(str(self.request.get('jsonp')) + "(" + json.dumps(objDict) + ");")
-        return
+    objDict = dict()
+    for k in ent.__dict__["_entity"].keys():
+        logging.info('k: ' + k)
+        dateAndTimeAsString = str(ent.__dict__["_entity"][k])
+        objDict['resetTime'] = json.loads('"'+dateAndTimeAsString+'"')
+        objDict['currentTime'] = json.loads('"'+str(datetime.now())+'"')
+    self.response.out.write(str(self.request.get('jsonp')) + "(" + json.dumps(objDict) + ");")
+    return
 
 
 class CleanAll(webapp2.RequestHandler):
