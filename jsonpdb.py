@@ -12,6 +12,9 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 # only for cleanup mechanism
 from datetime import datetime
 
+# The classes extending db.Model become
+# "records" (or, properly, "entities") in the Datastore
+# https://developers.google.com/appengine/docs/python/datastore/entities#Python_Kinds_and_identifiers
 
 class LastCleaned(db.Model):
     lastCleaned = db.DateTimeProperty(auto_now=True)
@@ -126,12 +129,15 @@ class WhenLastCleaned(webapp2.RequestHandler):
     # only.
     ent = LastCleaned.all().get()
 
+    if ent != None:
+        # found a result in the DataStore
+        dateAndTimeAsString = str(ent.lastCleaned)
+    else:
+        dateAndTimeAsString = 'unknown'
+
     objDict = dict()
-    for k in ent.__dict__["_entity"].keys():
-        logging.info('k: ' + k)
-        dateAndTimeAsString = str(ent.__dict__["_entity"][k])
-        objDict['resetTime'] = json.loads('"'+dateAndTimeAsString+'"')
-        objDict['currentTime'] = json.loads('"'+str(datetime.now())+'"')
+    objDict['resetTime'] = json.loads('"'+dateAndTimeAsString+'"')
+    objDict['currentTime'] = json.loads('"'+str(datetime.now())+'"')
     self.response.out.write(str(self.request.get('jsonp')) + "(" + json.dumps(objDict) + ");")
     return
 
