@@ -13,5 +13,10 @@ handlers:
   static_files: index.html
   upload: index.html
 
+# this one is an admin login
+- url: /cleanAll
+  script: jsonpdb.py
+  login: admin
+
 - url: /.*
   script: jsonpdb.py

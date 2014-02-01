@@ -1,0 +1,4 @@
+cron:
+- description: cleanup of the DataStore
+  url: /cleanAll
+  schedule: every 2 minutes
