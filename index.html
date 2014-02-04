@@ -104,26 +104,40 @@
 
 	<h2>Demo</h2>
 
-Select a server
-
+Pick which server to use:
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.min.js"></script>
 
 
 <select style="width:100%"  id="e9">
-    <option value="volvo">Suger</option>
-    <option value="saab">Saab</option>
-    <option value="opel">Opel</option>
-    <option value="audi">Audi</option>
+    <option value="localhost:8080">localhost:8080 (local Google App Engine)</option>
+    <option value="jsonp-db-redux.appspot.com">jsonp-db-redux.appspot.com (preconfigured Google App Engine instance)</option>
 </select>
 
 <script type="text/javascript" >
+
+var selected_server = "";
+
 $(document).ready(function() { 
  $("#e9").select2({
     minimumResultsForSearch: -1
 });
 
 addInputBox();
+
+selected_server = $("#e9").select2('data').id;
+
+$("#e9").on("change", function(e) { 
+  selected_server = $("#e9").select2('data').id;
+  console.log("selected_server: " + selected_server);
+});
+
+console.log("selected_server: " + selected_server);
+
+checkCleanUpTimeAndShowCountdown();
+// this is we retry in 10 seconds if there is no cleanup time
+var checkCleanUpTimeAndShowCountdownInterval =  setInterval(checkCleanUpTimeAndShowCountdown,10000);
+
 
 });
 
@@ -137,24 +151,18 @@ $(".select2-drop").append('<div><input type="text" style="width: 86%;padding: 9p
 
 
 function addToSelect(){
-  var value = $("#lname").val();
-  console.log("value: " + value);
+  selected_server = $("#lname").val();
+  console.log("selected_server: " + selected_server);
 
-$("#e9").append($('<option>', {value:value, text: value + " Text"}));
+$("#e9").append($('<option>', {value:selected_server, text: selected_server}));
 
 
-//$('select').select2().select2('val','3')
-
-$("#e9").select2("val", value);
+$("#e9").select2("val", selected_server);
 
 $("#e9").select2().blur();
 
 // for some reason we need to re-add the input box
 addInputBox();
-
-//var selectedItems = $("#e9").select2("val");
-//selectedItems.push(value);   // I used "WA" here to test.
-//$("#the_select").select2("val", selectedItems);
 
 
 }
@@ -182,7 +190,7 @@ addInputBox();
         	<td></td>
         </tr>
         <tr>
-            <td>  <textarea id="step2" rows="4" cols="45" >$.getJSON('http://localhost:8080/add?contact='+JSON.stringify(contact)+'&jsonp=?', function(data){    $("#step2response").val(data);
+            <td>  <textarea id="step2" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/add?contact='+JSON.stringify(contact)+'&jsonp=?', function(data){    $("#step2response").val(data);
 });</textarea>
            </td>
 			<td><input type="button" id="eval2" value="eval()" /></td>
@@ -196,7 +204,7 @@ addInputBox();
             <td></td>
         </tr>
         <tr>
-            <td>  <textarea id="step3" style="height: 82px;" >$.getJSON("http://localhost:8080/get?contact="+$("#step2response").val()+"&jsonp=?", function(data){
+            <td>  <textarea id="step3" style="height: 82px;" >$.getJSON('http://'+selected_server+'/get?contact='+$("#step2response").val()+'&jsonp=?', function(data){
   $("#step3response").val(JSON.stringify(data));
 });</textarea>
            </td>
@@ -210,7 +218,7 @@ addInputBox();
             <td><span class="rowTitle">Retrieve all objects of a specific type:</span> </td>
             <td></td>
         <tr>
-            <td>  <textarea id="step4" rows="4" cols="45" >$.getJSON('http://localhost:8080/get?contact=*&jsonp=?', function(data){
+            <td>  <textarea id="step4" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/get?contact=*&jsonp=?', function(data){
   $("#step4response").val(JSON.stringify(data));
 });</textarea>
            </td>
@@ -226,7 +234,7 @@ addInputBox();
             <td></td>
         </tr>
         <tr>
-            <td>  <textarea id="step5"  style="height: 82px;" >$.getJSON('http://localhost:8080/get?contact={"name":"Cherokee"}&jsonp=?', function(data){
+            <td>  <textarea id="step5"  style="height: 82px;" >$.getJSON('http://'+selected_server+'/get?contact={"name":"Cherokee"}&jsonp=?', function(data){
   $("#step5response").val(JSON.stringify(data));
 });</textarea>
            </td>
@@ -282,12 +290,9 @@ You could use this as...
 
 <script type="text/javascript">
 
-checkCleanUpTimeAndShowCountdown();
-// this is we retry in 10 seconds if there is no cleanup time
-var checkCleanUpTimeAndShowCountdownInterval =  setInterval(checkCleanUpTimeAndShowCountdown,10000);
 
 function checkCleanUpTimeAndShowCountdown() {
-  $.getJSON("http://localhost:8080/whenLastCleaned?jsonp=?", function(data){
+  $.getJSON('http://'+selected_server+'/whenLastCleaned?jsonp=?', function(data){
     a = data;
 
   console.log('checking the cleanup time again');
@@ -402,8 +407,8 @@ $(document).ready(function(){
       });
     });
   
-    var thedomain = 'localhost:8080';
-    var local = 'localhost:8080';
+    var thedomain = selected_server;
+    var local = selected_server;
     if (document.location.hostname == 'localhost'){
       $('textarea').each(function(i,el){
         $(el).val(  $(el).val().replace(thedomain,local) );
