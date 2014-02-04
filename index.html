@@ -34,8 +34,25 @@
       p { margin: 0px 0 7px; font-size: 80%;}
       tr.response > td:first-child { padding-left: 30px;}
       tr.response   textarea { width: 670px;}
+
+
+      // style for the dropdown
+      .dropdown-toggle {
+          border: 1px solid black;
+          width:120px;
+      }
+      .dropdown-menu, #other {
+          width:120px;
+      }
+      .caret {
+          float:right;
+          margin-right:5px;
+      }
       
     </style>
+
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.min.css">
+
     </head>
     
     
@@ -86,6 +103,64 @@
 
 
 	<h2>Demo</h2>
+
+Select a server
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.min.js"></script>
+
+
+<select style="width:100%"  id="e9">
+    <option value="volvo">Suger</option>
+    <option value="saab">Saab</option>
+    <option value="opel">Opel</option>
+    <option value="audi">Audi</option>
+</select>
+
+<script type="text/javascript" >
+$(document).ready(function() { 
+ $("#e9").select2({
+    minimumResultsForSearch: -1
+});
+
+addInputBox();
+
+});
+
+function addInputBox() {
+
+  $(".select2-search, .select2-focusser").remove();
+
+$(".select2-drop").append('<div><input type="text" style="width: 86%;padding: 9px;" id="lname"><button style="width: 86%;padding: 9px;" name="lname" onclick="addToSelect()">Add</button></div>');
+
+}
+
+
+function addToSelect(){
+  var value = $("#lname").val();
+  console.log("value: " + value);
+
+$("#e9").append($('<option>', {value:value, text: value + " Text"}));
+
+
+//$('select').select2().select2('val','3')
+
+$("#e9").select2("val", value);
+
+$("#e9").select2().blur();
+
+// for some reason we need to re-add the input box
+addInputBox();
+
+//var selectedItems = $("#e9").select2("val");
+//selectedItems.push(value);   // I used "WA" here to test.
+//$("#the_select").select2("val", selectedItems);
+
+
+}
+
+</script>
+
 
     <table class="mainTable">
         <tr>
@@ -203,7 +278,6 @@ You could use this as...
 </div>
     
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
 
 <script type="text/javascript">
