@@ -23,8 +23,8 @@ class EntitiesKinds(db.Model):
   theKind = db.StringProperty()
 
 def createEntity(className, jsonObj):
-    if className[0] == "_":
-        raise Exception("Class name must not start with _")
+    #if className[0] == "_":
+    #    raise Exception("Class name must not start with _")
     if className == "LastCleaned":                                # strip for no auto cleanup
         raise Exception("LastCleaned is a reserved entity kind")  # strip for no auto cleanup
     #Return an empty instance if no jsonObj present
@@ -164,7 +164,7 @@ class CleanAll(webapp2.RequestHandler):
     # kinds
     db.delete(allEntityKeys)
 
-    db.delete(LastCleaned.all())
+    db.delete(LastCleaned.all(keys_only=True))
     LastCleaned().put()
 
     self.redirect("index.html")
