@@ -14,6 +14,7 @@ handlers:
   upload: index.html
 
 # this one is an admin login
+# strip this URL paragraph for no auto cleanup
 - url: /cleanAll
   script: jsonpdb.py
   login: admin

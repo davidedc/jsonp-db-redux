@@ -1,3 +1,5 @@
+# strip the whole file for no auto cleanup
+
 cron:
 - description: cleanup of the DataStore
   url: /cleanAll

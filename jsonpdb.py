@@ -10,14 +10,14 @@ from google.appengine.api import users
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 # only for cleanup mechanism
-from datetime import datetime
+from datetime import datetime                        # strip for no auto cleanup
 
 # The classes extending db.Model become
 # "records" (or, properly, "entities") in the Datastore
 # https://developers.google.com/appengine/docs/python/datastore/entities#Python_Kinds_and_identifiers
 
-class LastCleaned(db.Model):
-    lastCleaned = db.DateTimeProperty(auto_now=True)
+class LastCleaned(db.Model):                         # strip for no auto cleanup
+    lastCleaned = db.DateTimeProperty(auto_now=True) # strip for no auto cleanup
 
 class EntitiesKinds(db.Model):
   theKind = db.StringProperty()
@@ -25,6 +25,8 @@ class EntitiesKinds(db.Model):
 def createEntity(className, jsonObj):
     if className[0] == "_":
         raise Exception("Class name must not start with _")
+    if className == "LastCleaned":                                # strip for no auto cleanup
+        raise Exception("LastCleaned is a reserved entity kind")  # strip for no auto cleanup
     #Return an empty instance if no jsonObj present
     if jsonObj == None:
         objClass = type(className,(db.Model,),{})
@@ -118,6 +120,7 @@ class Get(webapp2.RequestHandler):
             
             self.response.out.write(str(self.request.get('jsonp')) + "(" + json.dumps(objArr) + ");")
 
+# strip this whole class for no auto cleanup
 class WhenLastCleaned(webapp2.RequestHandler):
   def get(self):
     logging.info('WhenLastCleaned()')
@@ -141,7 +144,7 @@ class WhenLastCleaned(webapp2.RequestHandler):
     self.response.out.write(str(self.request.get('jsonp')) + "(" + json.dumps(objDict) + ");")
     return
 
-
+# strip this whole class for no auto cleanup
 class CleanAll(webapp2.RequestHandler):
   def get(self):
 
@@ -170,8 +173,8 @@ application = webapp2.WSGIApplication(
                                      [('/', MainPage),
                                       ('/add', Add),
                                       ('/get', Get),
-                                      ('/cleanAll', CleanAll),
-                                      ('/whenLastCleaned', WhenLastCleaned),
+                                      ('/cleanAll', CleanAll), # strip for no auto cleanup
+                                      ('/whenLastCleaned', WhenLastCleaned), # strip for no auto cleanup
                                       ],
                                      debug=True)
 
