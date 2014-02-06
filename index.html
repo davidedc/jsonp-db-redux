@@ -12,6 +12,18 @@
       margin-left: 2em;
       margin-bottom: 1em;
   }
+  .rowTitle {
+      margin-top: 1em;
+  }
+  textArea {
+      width: 100%;
+  }
+  .line-separator{
+    height:1px;
+    background:#717171;
+    border-bottom:1px solid #313030;
+    margin-bottom:1em;
+  }
   </style></head>
 
 <body>
@@ -81,8 +93,9 @@ shader.draw();
 	</div>
 
 <h2>API</h2>
+<div class="line-separator"></div>
 
-  <h3>Storing data</h3>
+  <h3>Storing data:</h3>
 
   <div class="indentedLine">http://localhost:8080/add?kind=<i>storeKey</i>&json=<i>jsonObj</i>&amp;callback=<i>callbackFunc</i></div>
   
@@ -96,8 +109,7 @@ shader.draw();
   
 
 
-  <h3>Retrieve by item key</h3>
-  
+  <h3>Retrieve by item key:</h3>
   <div class="indentedLine">http://localhost:8080/get?kind=<i>storeKey</i>&filter=<i>itemKey</i>&callback=<i>callbackFunc</i></div>
   <div class="indentedLine">
   <b>Example:</b>
@@ -109,7 +121,7 @@ shader.draw();
   </div>
 
 
-  <h3>Retrieve all items by storeKey</h3>
+  <h3>Retrieve all items by storeKey:</h3>
   <div class="indentedLine">http://localhost:8080/get?kind=<i>storeKey</i>&filter=*&callback=<i>callbackFunc</i></div>
   <div class="indentedLine">
   <b>Example:</b>
@@ -118,7 +130,7 @@ shader.draw();
   <div class="indentedLine">func([{"foo":"bar","baz":9},{"foo":"bar2","baz":10}]);</div>
   </div>
 
-  <h3>Retrieve specific items by query and storeKey</h3>
+  <h3>Retrieve specific items by query and storeKey:</h3>
   <div class="indentedLine">Pass an object that to match against.</div>
   <div class="indentedLine">http://localhost:8080/get?kind=<i>storeKey</i>&filter=<i>jsonObjToMatch</i>&callback=<i>callbackFunc</i></div>
   <div class="indentedLine">
@@ -130,14 +142,15 @@ shader.draw();
 
 
 	<h2>Demo</h2>
+  <div class="line-separator"></div>
 
-Pick which server to use:
+<b>1.</b> Pick which server to use:
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.min.js"></script>
 
 
 <select style="width:100%"  id="e9">
-    <option value="jsonp-db-redux.appspot.com">jsonp-db-redux.appspot.com (preconfigured Google App Engine instance)</option>
+    <option value="jsonp-db-redux.appspot.com">jsonp-db-redux.appspot.com (preconfigured and running on Google App Engine)</option>
     <option value="localhost:8080">localhost:8080 (local Google App Engine)</option>
 </select>
 
@@ -176,7 +189,7 @@ function addInputBox() {
 
   $(".select2-search, .select2-focusser").remove();
 
-$(".select2-drop").append('<div><input type="text" style="width: 86%;padding: 9px;" id="lname"><button style="width: 86%;padding: 9px;" name="lname" onclick="addToSelect()">Add</button></div>');
+$(".select2-drop").append('<div><input type="text" style="padding: 9px;margin-left: 6px;margin-bottom: 7px;" id="lname" value="additional server..."><button style="padding: 9px;" name="lname" onclick="addToSelect()">Add</button></div>');
 
 }
 
@@ -201,81 +214,53 @@ addInputBox();
 </script>
 
 
-    <table class="mainTable">
-        <tr>
-            <td><span class="rowTitle">Create an object</span></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td> 
-            <textarea id="step1" rows="5" cols="45"  style="height: 33px;">contact = {
+<div class="rowTitle"><b>2.</b> Create an object:</div>
+<textarea id="step1" rows="5" cols="45"  style="height: 33px;">contact = {
   name : "Jesper",
   age : 22,
   phone : ["555-0100", "555-0120"]
 }</textarea>
-			</td>
-			<td><input type="button" id="eval1" value="eval()" /></td>
-		</tr>
-		<tr>
-            <td width="200"><span class="rowTitle">Store your object:</span> </td>
-        	<td></td>
-        </tr>
-        <tr>
-            <td>  <textarea id="step2" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/add?kind=contact&json='+JSON.stringify(contact)+'&callback=?', function(data){    $("#step2response").val(data);
+<br>
+<input type="button" id="eval1" value="Create" />
+
+<br>
+<div class="rowTitle"><b>3.</b> Store the object:</div>
+<textarea id="step2" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/add?kind=contact&json='+JSON.stringify(contact)+'&callback=?', function(data){    $("#step2response").val(data);
 });</textarea>
-           </td>
-			<td><input type="button" id="eval2" value="eval()" /></td>
-		</tr>
-		<tr>
-			<td>Response:<br><textarea id="step2response" rows="1" cols="45"></textarea></td>
-			<td></td>
-		</tr>
-		<tr>
-            <td><span class="rowTitle">Retrieve your object by key:</span></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>  <textarea id="step3" style="height: 82px;" >$.getJSON('http://'+selected_server+'/get?kind=contact&filter='+$("#step2response").val()+'&callback=?', function(data){
+<br>
+<input type="button" id="eval2" value="Store" />
+<br>
+Response:<br><textarea id="step2response" rows="1" cols="45"></textarea>
+
+<br>
+<div class="rowTitle"><b>4.</b> Retrieve your object by key:</div>
+<textarea id="step3" style="height: 82px;" >$.getJSON('http://'+selected_server+'/get?kind=contact&filter='+$("#step2response").val()+'&callback=?', function(data){
   $("#step3response").val(JSON.stringify(data));
 });</textarea>
-           </td>
-			<td><input type="button" id="eval3" value="eval()" /></td>
-        </tr>
-        <tr>
-        	<td>Response:<br><textarea id="step3response" rows="3" cols="45"></textarea>
-			</td><td></td>
-		</tr>
-		<tr>
-            <td><span class="rowTitle">Retrieve all objects of a specific type:</span> </td>
-            <td></td>
-        <tr>
-            <td>  <textarea id="step4" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/get?kind=contact&filter=*&callback=?', function(data){
+<br>
+<input type="button" id="eval3" value="Retrieve via key" />
+<br>
+Response:<br><textarea id="step3response" rows="3" cols="45"></textarea>
+
+<br>
+<div class="rowTitle"><b>5.</b> Retrieve all objects of a specific type:</div>
+<textarea id="step4" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/get?kind=contact&filter=*&callback=?', function(data){
   $("#step4response").val(JSON.stringify(data));
 });</textarea>
-           </td>
-			<td><input type="button" id="eval4" value="eval()" /></td>
-        </tr>
-        <tr>
-        	<td>Response:<br><textarea id="step4response" rows="5" cols="45"></textarea>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-            <td><span class="rowTitle">Retrieve based on criteria:</span></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>  <textarea id="step5"  style="height: 82px;" >$.getJSON('http://'+selected_server+'/get?kind=contact&filter={"name":"Cherokee"}&callback=?', function(data){
+<br>
+<input type="button" id="eval4" value="Retreive all of a kind" />
+<br>
+Response:<br><textarea id="step4response" rows="5" cols="45"></textarea>
+
+<br>
+<div class="rowTitle"><b>6.</b> Retrieve based on criteria:</div>
+<textarea id="step5"  style="height: 82px;" >$.getJSON('http://'+selected_server+'/get?kind=contact&filter={"name":"Cherokee"}&callback=?', function(data){
   $("#step5response").val(JSON.stringify(data));
 });</textarea>
-           </td>
-			<td><input type="button" id="eval5" value="eval()" /></td>
-        </tr>
-        <tr>
-        	<td>Response:<br><textarea id="step5response" rows="5" cols="45"></textarea>
-        	<td></td>
-    	</tr>
-    </table>
+<br>
+<input type="button" id="eval5" value="Retrieve via filter" />
+<br>
+Response:<br><textarea id="step5response" rows="5" cols="45"></textarea>
 
     
     
