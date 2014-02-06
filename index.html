@@ -158,6 +158,7 @@ $(document).ready(function() {
 
     // restart the timer cause the cleanup period might be different
     hideCountdown();
+    clearInterval(checkCleanUpTimeAndShowCountdownInterval);
     checkCleanUpTimeAndShowCountdownInterval = null;
     checkCleanUpTimeAndShowCountdown();
   });
@@ -217,7 +218,7 @@ addInputBox();
         	<td></td>
         </tr>
         <tr>
-            <td>  <textarea id="step2" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/add?contact='+JSON.stringify(contact)+'&jsonp=?', function(data){    $("#step2response").val(data);
+            <td>  <textarea id="step2" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/add?contact='+JSON.stringify(contact)+'&callback=?', function(data){    $("#step2response").val(data);
 });</textarea>
            </td>
 			<td><input type="button" id="eval2" value="eval()" /></td>
@@ -231,7 +232,7 @@ addInputBox();
             <td></td>
         </tr>
         <tr>
-            <td>  <textarea id="step3" style="height: 82px;" >$.getJSON('http://'+selected_server+'/get?contact='+$("#step2response").val()+'&jsonp=?', function(data){
+            <td>  <textarea id="step3" style="height: 82px;" >$.getJSON('http://'+selected_server+'/get?contact='+$("#step2response").val()+'&callback=?', function(data){
   $("#step3response").val(JSON.stringify(data));
 });</textarea>
            </td>
@@ -245,7 +246,7 @@ addInputBox();
             <td><span class="rowTitle">Retrieve all objects of a specific type:</span> </td>
             <td></td>
         <tr>
-            <td>  <textarea id="step4" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/get?contact=*&jsonp=?', function(data){
+            <td>  <textarea id="step4" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/get?contact=*&callback=?', function(data){
   $("#step4response").val(JSON.stringify(data));
 });</textarea>
            </td>
@@ -261,7 +262,7 @@ addInputBox();
             <td></td>
         </tr>
         <tr>
-            <td>  <textarea id="step5"  style="height: 82px;" >$.getJSON('http://'+selected_server+'/get?contact={"name":"Cherokee"}&jsonp=?', function(data){
+            <td>  <textarea id="step5"  style="height: 82px;" >$.getJSON('http://'+selected_server+'/get?contact={"name":"Cherokee"}&callback=?', function(data){
   $("#step5response").val(JSON.stringify(data));
 });</textarea>
            </td>
@@ -329,7 +330,7 @@ function checkCleanUpTimeAndShowCountdown() {
     checkCleanUpTimeAndShowCountdownInterval =  setInterval(checkCleanUpTimeAndShowCountdown,10000);
   }
 
-  $.getJSON('http://'+selected_server+'/whenLastCleaned?jsonp=?', function(data){
+  $.getJSON('http://'+selected_server+'/whenLastCleaned?callback=?', function(data){
     a = data;
 
   console.log('checking the cleanup time again');
@@ -344,7 +345,7 @@ function checkCleanUpTimeAndShowCountdown() {
   else {
     console.log('retrieved the cleanup time, stopping the retry');
     // we stop retrying fetching the cleanup time
-    clearTimeout(checkCleanUpTimeAndShowCountdownInterval);
+    clearInterval(checkCleanUpTimeAndShowCountdownInterval);
   }
 
   var t1 = dateObjectFromStrind(a.resetTime)
@@ -449,7 +450,7 @@ $(document).ready(function(){
    //debug area
     $('#debugvalue').next().click(function(){
       var textarea = $(this).parents('div:eq(0)').find('textarea');
-      $.getJSON('http://'+thedomain+'/get?'+ $('#debugvalue').val() +'=*&jsonp=?', function(data){
+      $.getJSON('http://'+thedomain+'/get?'+ $('#debugvalue').val() +'=*&callback=?', function(data){
        textarea.val(JSON.stringify(data));
       });
     });

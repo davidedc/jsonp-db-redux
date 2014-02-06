@@ -57,12 +57,12 @@ class MainPage(webapp2.RequestHandler):
 class Add(webapp2.RequestHandler):
   def get(self):
     logging.debug('add being done')
-    if self.request.get('jsonp') and len(self.request.GET.keys()) >= 2:
+    if self.request.get('callback') and len(self.request.GET.keys()) >= 2:
         className = str(self.request.GET.keys()[0])
         jsonStr = urllib.unquote(str(self.request.get(className)))
         jsonObj = json.loads(jsonStr)
         objEntity = createEntity(className, jsonObj)
-        self.response.out.write(self.request.get('jsonp') + "(\"" + str(objEntity.put()) + "\");")
+        self.response.out.write(self.request.get('callback') + "(\"" + str(objEntity.put()) + "\");")
 
         entityKind = EntitiesKinds(theKind = className)
         v = EntitiesKinds.all().filter('theKind =', className)
@@ -73,9 +73,9 @@ class Add(webapp2.RequestHandler):
 class Get(webapp2.RequestHandler):
   def get(self):
     
-    if self.request.get('jsonp') and len(self.request.GET.keys()) >= 2:
+    if self.request.get('callback') and len(self.request.GET.keys()) >= 2:
         className = str(self.request.GET.keys()[0])
-        if str.lower(className) == "jsonp":
+        if str.lower(className) == "callback":
             raise Exception("Expected JSON object name as first parameter.")
         classString = str(self.request.get(className))
         if classString == "*":
@@ -88,7 +88,7 @@ class Get(webapp2.RequestHandler):
                 for k in ent.__dict__["_entity"].keys():
                         objDict[str(k)] = json.loads(ent.__dict__["_entity"][k])
                 objArr.append(objDict)
-            self.response.out.write(str(self.request.get('jsonp')) + "(" + json.dumps(objArr) + ");")
+            self.response.out.write(str(self.request.get('callback')) + "(" + json.dumps(objArr) + ");")
         elif not re.compile('\W').match(classString):
             #Query for object based on a unique key
             objClass = type(className, (db.Model,), {})
@@ -98,7 +98,7 @@ class Get(webapp2.RequestHandler):
                 objDict = dict()
                 for k in ent.__dict__["_entity"].keys():
                         objDict[str(k)] = json.loads(ent.__dict__["_entity"][k])
-                self.response.out.write(str(self.request.get('jsonp')) + "(" + json.dumps(objDict) + ");")
+                self.response.out.write(str(self.request.get('callback')) + "(" + json.dumps(objDict) + ");")
         else:
             jsonStr = urllib.unquote(classString)
             jsonObj = json.loads(jsonStr)
@@ -118,7 +118,7 @@ class Get(webapp2.RequestHandler):
                         objDict[str(k)] = json.loads(ent.__dict__["_entity"][k])
                 objArr.append(objDict)
             
-            self.response.out.write(str(self.request.get('jsonp')) + "(" + json.dumps(objArr) + ");")
+            self.response.out.write(str(self.request.get('callback')) + "(" + json.dumps(objArr) + ");")
 
 # strip this whole class for no auto cleanup
 class WhenLastCleaned(webapp2.RequestHandler):
@@ -141,7 +141,7 @@ class WhenLastCleaned(webapp2.RequestHandler):
     objDict = dict()
     objDict['resetTime'] = json.loads('"'+dateAndTimeAsString+'"')
     objDict['currentTime'] = json.loads('"'+str(datetime.now())+'"')
-    self.response.out.write(str(self.request.get('jsonp')) + "(" + json.dumps(objDict) + ");")
+    self.response.out.write(str(self.request.get('callback')) + "(" + json.dumps(objDict) + ");")
     return
 
 # strip this whole class for no auto cleanup
