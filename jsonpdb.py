@@ -148,6 +148,18 @@ class WhenLastCleaned(webapp2.RequestHandler):
 class CleanAll(webapp2.RequestHandler):
   def get(self):
 
+    # this commented line below should
+    # delete all LastCleaned entities but,
+    # mysteriously, it doesn't, it leaves out
+    # some entities. The long-winded form
+    # below does the job instead.
+    # db.delete(LastCleaned.all(keys_only=True))
+    query = LastCleaned.all(keys_only=True)
+    entries =query.fetch(1000)
+    db.delete(entries)
+
+    LastCleaned().put()
+
     # first get all the kinds of the entities
     allEntityKeys = EntitiesKinds.all()
 
@@ -164,8 +176,6 @@ class CleanAll(webapp2.RequestHandler):
     # kinds
     db.delete(allEntityKeys)
 
-    db.delete(LastCleaned.all(keys_only=True))
-    LastCleaned().put()
 
     self.redirect("index.html")
 
