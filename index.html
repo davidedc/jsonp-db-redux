@@ -51,7 +51,7 @@
       
     </style>
 
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.min.css">
 
     </head>
     
@@ -117,28 +117,30 @@ Pick which server to use:
 <script type="text/javascript" >
 
 var selected_server = "";
-var checkCleanUpTimeAndShowCountdownInterval;
+var checkCleanUpTimeAndShowCountdownInterval = null;
 
 $(document).ready(function() { 
- $("#e9").select2({
-    minimumResultsForSearch: -1
-});
+  $("#e9").select2({
+      minimumResultsForSearch: -1
+  });
 
-addInputBox();
+  addInputBox();
 
-selected_server = $("#e9").select2('data').id;
-
-$("#e9").on("change", function(e) { 
   selected_server = $("#e9").select2('data').id;
+
+  $("#e9").on("change", function(e) { 
+    selected_server = $("#e9").select2('data').id;
+    console.log("selected_server: " + selected_server);
+
+    // restart the timer cause the cleanup period might be different
+    hideCountdown();
+    checkCleanUpTimeAndShowCountdownInterval = null;
+    checkCleanUpTimeAndShowCountdown();
+  });
+
   console.log("selected_server: " + selected_server);
-});
 
-console.log("selected_server: " + selected_server);
-
-checkCleanUpTimeAndShowCountdown();
-// this is we retry in 10 seconds if there is no cleanup time
-checkCleanUpTimeAndShowCountdownInterval =  setInterval(checkCleanUpTimeAndShowCountdown,10000);
-
+  checkCleanUpTimeAndShowCountdown();
 
 });
 
@@ -297,6 +299,12 @@ You could use this as...
 var numberOfMinutesBetweenRetries = 2;
 
 function checkCleanUpTimeAndShowCountdown() {
+
+  // this is we retry in 10 seconds if there is no cleanup time
+  if (checkCleanUpTimeAndShowCountdownInterval === null) {
+    checkCleanUpTimeAndShowCountdownInterval =  setInterval(checkCleanUpTimeAndShowCountdown,10000);
+  }
+
   $.getJSON('http://'+selected_server+'/whenLastCleaned?jsonp=?', function(data){
     a = data;
 
@@ -339,6 +347,14 @@ function checkCleanUpTimeAndShowCountdown() {
   });
 }
 
+var timerInterval;
+
+function hideCountdown(){
+  var countdown = document.getElementById("countdown");
+  clearInterval(timerInterval);
+  countdown.innerHTML = "";
+}
+
 function showCountdown(target_date){
 var days, hours, minutes, seconds;
  
@@ -346,7 +362,7 @@ var days, hours, minutes, seconds;
 var countdown = document.getElementById("countdown");
  
 // update the tag with id "countdown" every 1 second
-var timerInterval =  setInterval(function () {
+  timerInterval =  setInterval(function () {
  
     // find the amount of "seconds" between now and target
     var current_date = new Date().getTime();
