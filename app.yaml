@@ -19,5 +19,8 @@ handlers:
   script: jsonpdb.py
   login: admin
 
+- url: /icons-and-styles
+  static_dir: icons-and-styles
+
 - url: /.*
   script: jsonpdb.py
