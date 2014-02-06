@@ -1,72 +1,112 @@
-<!doctype html> 
-<html>
-    <head>
-    <title>JSON-P DB Redux</title>
-    <style type="text/css">
-      td { vertical-align :top }
-      tr { }
-     .rowTitle { font-weight : bold; display: block; margin-top: 10px; }
-      body { text-align: center; font-family: Geneva, Lucida Sans, Lucida Grande, Lucida Sans Unicode, calibri, Verdana, sans-serif ; }
-      #page { width: 875px; text-align: left; margin: 0 auto; background:white;padding : 20px 15px; -moz-border-radius: 20px; }
-
-      h1,h2,h3,h4,h5 { font-family: 'Clarendon Std', cambria, 'Century Old Style Std', 'Century Schoolbook', Georgia, serif; color: #21630D;}
-      h3 { margin: 25px 0 5px;}
-		  h4 { margin: 29px 0 8px; background: #efefef;}
-		  h3 + h4 { margin-top: 10px;}
-      .mainTable {
-      
-      }
-      a { background: #21630D; color: white; text-decoration:none; }
-      a:hover { background: white; color: #21630D ;}
-      pre,textarea,tt,code { font-family: Consolas, Lucida Console, Monaco, monospace;}
-      textarea {background-color:#444;color:white; font-size: 80%; height:65px;  width:700px;-moz-border-radius: 7px; }
-      button { margin-top: 19px; }
-      strong { }
-      strong,code{ display:block; margin-bottom: 9px;}
-      strong i { color:#4163BA; font-family:monospace; font-size:118%; font-style:normal; }
-      code { color: #555; }
-      
-      code em { display:block;}
-      code small { font-family: calibri, helvetica, arial;}
-      b { display : block; margin-top: 4px; font-size: 90%; color: ;}
-      li strong { display: inline; margin: 0;}
-      strong small { font-weight: normal;}
-      p { margin: 0px 0 7px; font-size: 80%;}
-      tr.response > td:first-child { padding-left: 30px;}
-      tr.response   textarea { width: 670px;}
-
-
-      // style for the dropdown
-      .dropdown-toggle {
-          border: 1px solid black;
-          width:120px;
-      }
-      .dropdown-menu, #other {
-          width:120px;
-      }
-      .caret {
-          float:right;
-          margin-right:5px;
-      }
-      
-    </style>
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>JSON-P DB Redux</title>
+	
+<meta name="description" content="">
+<link rel="stylesheet" href="./icons-and-styles/style.css" title="yellow" type="text/css" media="screen">
+	<link href="./icons-and-styles/prettify.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="./icons-and-styles/prettify.js"></script>
     <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.min.css">
+	<style id="clearly_highlighting_css" type="text/css">/* selection */ html.clearly_highlighting_enabled ::-moz-selection { background: rgba(246, 238, 150, 0.99); } html.clearly_highlighting_enabled ::selection { background: rgba(246, 238, 150, 0.99); } /* cursor */ html.clearly_highlighting_enabled {    /* cursor and hot-spot position -- requires a default cursor, after the URL one */    cursor: url("chrome-extension://pioclpoplcdbaefihamjohnefbikjilc/clearly/images/highlight--cursor.png") 14 16, text; } /* highlight tag */ em.clearly_highlight_element {    font-style: inherit !important; font-weight: inherit !important;    background-image: url("chrome-extension://pioclpoplcdbaefihamjohnefbikjilc/clearly/images/highlight--yellow.png");    background-repeat: repeat-x; background-position: top left; background-size: 100% 100%; } /* the delete-buttons are positioned relative to this */ em.clearly_highlight_element.clearly_highlight_first { position: relative; } /* delete buttons */ em.clearly_highlight_element a.clearly_highlight_delete_element {    display: none; cursor: pointer;    padding: 0; margin: 0; line-height: 0;    position: absolute; width: 34px; height: 34px; left: -17px; top: -17px;    background-image: url("chrome-extension://pioclpoplcdbaefihamjohnefbikjilc/clearly/images/highlight--delete-sprite.png"); background-repeat: no-repeat; background-position: 0px 0px; } em.clearly_highlight_element a.clearly_highlight_delete_element:hover { background-position: -34px 0px; } /* retina */ @media (min--moz-device-pixel-ratio: 2), (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {    em.clearly_highlight_element { background-image: url("chrome-extension://pioclpoplcdbaefihamjohnefbikjilc/clearly/images/highlight--yellow@2x.png"); }    em.clearly_highlight_element a.clearly_highlight_delete_element { background-image: url("chrome-extension://pioclpoplcdbaefihamjohnefbikjilc/clearly/images/highlight--delete-sprite@2x.png"); background-size: 68px 34px; } } </style><style>[touch-action="none"]{ -ms-touch-action: none; touch-action: none; }[touch-action="pan-x"]{ -ms-touch-action: pan-x; touch-action: pan-x; }[touch-action="pan-y"]{ -ms-touch-action: pan-y; touch-action: pan-y; }[touch-action="scroll"],[touch-action="pan-x pan-y"],[touch-action="pan-y pan-x"]{ -ms-touch-action: pan-x pan-y; touch-action: pan-x pan-y; }</style></head>
 
-    </head>
-    
-    
-    <body>
-      
-    <div id="page">  
+<body>
 
-    <h1>JSON-P DB Redux</h1>
- 	
-    <p id="description">
+<div id="grid_hold">
+
+<div id="header">
+<div id="title"><span class="blog_title">JSON-P DB Redux</span></div>
+<div id="about">
+	
     JSON-P DB Redux utilizes Google App Engine's datastore in order to provide a persistent warehouse for arbitrary JSON objects that are made easily accessible from client-side javascript code via <a href="http://www.json.com/2007/12/24/jsonp-header-transfer-proposal/">JSON-P</a>.
-    </p>
- 
-	<h2>API</h2>
+
+</div>
+</div>
+<div id="content_hold">
+
+		
+	
+	
+
+		
+	
+	
+		
+	<h1>A few updates</h1>
+	
+		
+	
+	
+		
+	
+	
+		
+	
+	
+		
+	
+	
+		
+	
+	
+		
+	
+	
+		
+	
+	
+		
+	
+	<div id="content">
+		<p><strong>Several people have asked me why they should use GLOW when there’re a lot more competent libraries out there. It’s a good question, which I’ll try to answer here.</strong></p>
+<p>GLOW is a WebGL wrapper, so you’re flying very LOW over the GL – that’s where the name comes from. This also means that GLOW is not for beginners but for you with some experience of WebGL or OpenGL. It also means that it’s not a WebGL 3D framework (like Three.js). It’s just a wrapper.  </p>
+<p>Given that you have experience, you’re probably familiar with code looking like…</p>
+<pre class="prettyprint">GL.useProgram( program );
+GL.uniformMatrix4fv( viewMatrixLoc, false, viewMatrix );
+GL.uniformMatrix4fv( projMatrixLoc, false, projMatrix );
+GL.uniform1i( sampleLoc, 0 );
+GL.activeTexture( GL.TEXTURE0 );
+GL.bindTexture( GL.TEXTURE_2D, texture );
+GL.enableVertexAttribArray(0);
+GL.enableVertexAttribArray(1);
+GL.enableVertexAttribArray(2);
+GL.bindBuffer( GL.ARRAY_BUFFER, vertices );
+GL.vertexAttribPointer( 0, 3, GL.FLOAT, false, 0, 0 );
+GL.bindBuffer( GL.ARRAY_BUFFER, uvs );
+GL.vertexAttribPointer( 1, 2, GL.FLOAT, false, 0, 0 );
+GL.bindBuffer( GL.ARRAY_BUFFER, normals );
+GL.vertexAttribPointer( 2, 3, GL.FLOAT, false, 0, 0 );
+GL.bindBuffer( GL.ELEMENT_ARRAY_BUFFER, faces );
+GL.drawElements( GL.TRIANGLES, 36, GL.UNSIGNED_SHORT, 0 );
+</pre>
+<p>This is pretty much the only way to draw something with WebGL – it’s designed this way. GLOW wraps this with a tiny overhead <a href="http://i-am-glow.com/?p=18">(most of which is the cache)</a> and all you do is…</p>
+<pre class="prettyprint">myShader.draw();</pre>
+<p>It’s in your shader code the magic happens and we think this is where you should spend your time. The shader data format is similar to the Three.js custom shader format – only slightly simpler, all to get you started within minutes… </p>
+<pre class="prettyprint">var shaderData = {
+  vertexShader: "...the vertex shader code...",
+  fragmentShader: "...the fragment shader code...",
+  data: {
+    viewMatrix: new GLOW.Matrix4(),
+    vertices: myFloat32ArrayWithVertices,
+    ...and all other uniforms and attributes...
+  }
+  elements: myUint16ArrayWithElements
+}
+
+var shader = new GLOW.Shader( shaderData );
+shader.draw();
+</pre>
+<p>GLOW comes with an extras library including matrices, vectors, hierarchies, geometry parsers and other helpful objects, all (most probably) working out of the box. As GLOW is just a wrapper, it’s compatible with all other WebGL libraries and can be used to extend these in all possible ways. </p>
+<p>So, the benefits are:</p>
+<ul>
+<li>You get close to WebGL without having to deal with the WebGL API</li>
+<li>It’s very easy to create shaders</li>
+<li>There are a lot of extras that helps you get going</li>
+<li>It’s compatible with all other WebGL frameworks</li>
+</ul>
+<p>Enjoy!</p>
+	</div>
+
+<h2>API</h2>
 
   <h4>Storing data</h4>
 
@@ -300,7 +340,7 @@ var numberOfMinutesBetweenRetries = 2;
 
 function checkCleanUpTimeAndShowCountdown() {
 
-  // this is we retry in 10 seconds if there is no cleanup time
+  // this is for retrying every 10 seconds until we get a "last cleanup time" value
   if (checkCleanUpTimeAndShowCountdownInterval === null) {
     checkCleanUpTimeAndShowCountdownInterval =  setInterval(checkCleanUpTimeAndShowCountdown,10000);
   }
@@ -458,6 +498,36 @@ $(document).ready(function(){
 var people = [{first:'Lee',last:'Michael',phone:'461-0898'},{first:'Burton',last:'Calhoun',phone:'220-6894'},{first:'Inga',last:'Chaney',phone:'465-9474'},{first:'Rogan',last:'Hogan',phone:'574-6643'},{first:'Owen',last:'Parrish',phone:'489-5054'},{first:'Imogene',last:'Dawson',phone:'784-1333'},{first:'Stewart',last:'Barron',phone:'383-0275'},{first:'Laurel',last:'Mcgowan',phone:'151-3459'},{first:'Celeste',last:'Garcia',phone:'765-8504'},{first:'Rose',last:'Wagner',phone:'637-1888'},{first:'Vernon',last:'Hanson',phone:'510-8635'},{first:'Harrison',last:'Avery',phone:'263-1412'},{first:'Anne',last:'Lewis',phone:'813-2150'},{first:'Lucius',last:'Reynolds',phone:'597-5090'},{first:'Dora',last:'Mckay',phone:'661-1635'},{first:'Justine',last:'Johnston',phone:'481-1965'},{first:'Jessica',last:'Mcknight',phone:'309-8439'},{first:'Ariana',last:'Ayers',phone:'562-9595'},{first:'Vivien',last:'Ray',phone:'462-9926'},{first:'Donovan',last:'Fitzgerald',phone:'918-9106'},{first:'Marny',last:'Paul',phone:'801-5722'},{first:'Burton',last:'White',phone:'772-0237'},{first:'Damian',last:'Keith',phone:'683-3795'},{first:'Kelly',last:'Woods',phone:'139-0809'},{first:'Lucy',last:'Peterson',phone:'642-0047'},{first:'Michelle',last:'Frost',phone:'965-9367'},{first:'Jessamine',last:'Barrett',phone:'755-4714'},{first:'Gannon',last:'Mcclain',phone:'212-4235'},{first:'Eliana',last:'Vega',phone:'708-8737'},{first:'Ina',last:'Sloan',phone:'429-0936'},{first:'Cade',last:'Macias',phone:'311-1244'},{first:'Wyoming',last:'House',phone:'646-4740'},{first:'Celeste',last:'Reeves',phone:'488-9747'},{first:'Wylie',last:'Mcneil',phone:'357-7859'},{first:'Jillian',last:'Barnes',phone:'999-7914'},{first:'Gail',last:'West',phone:'896-4872'},{first:'Camden',last:'Grimes',phone:'677-6364'},{first:'Emerald',last:'Nielsen',phone:'659-5822'},{first:'Quinn',last:'Curry',phone:'652-0612'},{first:'Deirdre',last:'Valentine',phone:'635-3759'},{first:'Gretchen',last:'Blankenship',phone:'217-4994'},{first:'Maggie',last:'Lynch',phone:'884-7839'},{first:'Josiah',last:'Phillips',phone:'178-1771'},{first:'Vance',last:'Terry',phone:'885-4516'},{first:'Heidi',last:'Austin',phone:'413-1616'},{first:'Ori',last:'Whitaker',phone:'306-1890'},{first:'Phelan',last:'Rosales',phone:'777-7886'},{first:'Cherokee',last:'Barry',phone:'294-1438'},{first:'Paul',last:'Gamble',phone:'409-2515'},{first:'Fletcher',last:'Torres',phone:'379-2729'},{first:'Tate',last:'Cameron',phone:'793-0322'},{first:'Sade',last:'Finch',phone:'462-2929'},{first:'Clare',last:'Wong',phone:'145-1867'},{first:'Leonard',last:'Long',phone:'487-6185'},{first:'Jaime',last:'Humphrey',phone:'166-0517'},{first:'Latifah',last:'Marsh',phone:'950-4664'},{first:'Anjolie',last:'Maldonado',phone:'921-4088'},{first:'Bert',last:'Keller',phone:'685-1136'},{first:'Brian',last:'Valentine',phone:'306-8235'},{first:'Chaim',last:'Munoz',phone:'548-9999'},{first:'Lucian',last:'Rush',phone:'930-8074'},{first:'Eugenia',last:'Randolph',phone:'461-0277'},{first:'Quamar',last:'Dawson',phone:'568-3263'},{first:'Callum',last:'Andrews',phone:'233-8448'},{first:'Sloane',last:'Carter',phone:'772-9391'},{first:'Sloane',last:'Meyer',phone:'650-6996'},{first:'Aristotle',last:'Guzman',phone:'576-6760'},{first:'Isadora',last:'Gonzalez',phone:'355-8577'},{first:'Berk',last:'England',phone:'732-0329'},{first:'Shannon',last:'Wright',phone:'251-5852'},{first:'Brandon',last:'Bolton',phone:'566-7439'},{first:'Byron',last:'Reese',phone:'519-4741'},{first:'Ursula',last:'Ballard',phone:'970-0405'},{first:'Abel',last:'Osborne',phone:'772-4045'},{first:'Kamal',last:'Middleton',phone:'912-9579'},{first:'Jana',last:'Jacobs',phone:'909-6377'},{first:'acqueline',last:'Lawrence',phone:'590-1404'},{first:'Ima',last:'Curry',phone:'532-9269'},{first:'Chloe',last:'Powell',phone:'650-1546'},{first:'Aquila',last:'Humphrey',phone:'863-0377'},{first:'Signe',last:'Branch',phone:'775-4534'},{first:'Clayton',last:'Waters',phone:'105-5874'},{first:'Madaline',last:'Harrell',phone:'646-6440'},{first:'Bryar',last:'Cervantes',phone:'909-8634'},{first:'Martina',last:'Giles',phone:'757-1348'},{first:'Veronica',last:'Solomon',phone:'964-1198'},{first:'Breanna',last:'Battle',phone:'243-4446'},{first:'Callum',last:'Barnes',phone:'813-6699'},{first:'Marcia',last:'Macdonald',phone:'468-4480'},{first:'Kelsie',last:'Ellis',phone:'858-8913'},{first:'Philip',last:'Fields',phone:'636-1738'},{first:'Brynn',last:'Wells',phone:'669-8094'},{first:'Ulric',last:'Kinney',phone:'412-7766'},{first:'Genevieve',last:'Wilkerson',phone:'638-6049'},{first:'Marcia',last:'Bray',phone:'890-3287'},{first:'Noelani',last:'Acevedo',phone:'611-5453'},{first:'Armand',last:'Webster',phone:'666-6518'},{first:'Heather',last:'Briggs',phone:'841-8455'},{first:'Bernard',last:'Miranda',phone:'391-2172'},{first:'Orli',last:'Hurley',phone:'124-1115'}];
 
 </script>
-    
-    </body>
-    </html>
+
+	</div>
+
+<div id="sidebar">
+<div id="sidebarTitle"><span class="text">GET GLOW</span></div>
+<ul>
+	<li><a href="http://www.github.com/empaempa/GLOW/">Here</a></li>
+</ul>
+<div id="sidebarTitle"><span class="text">COMMENT</span></div>
+<ul>
+	<li><a href="https://github.com/empaempa/GLOW/issues">Here</a></li>
+</ul>
+
+<div id="sidebarTitle"><span class="text">TUTORIALS</span></div>
+<ul>
+	<li class="page_item page-item-2"><a href="http://i-am-glow.com/?page_id=2" title="Hello Cube!">Hello Cube!</a></li>
+<li class="page_item page-item-183"><a href="http://i-am-glow.com/?page_id=183" title="Hello FBO Simulation">Hello FBO Simulation</a></li>
+<li class="page_item page-item-61"><a href="http://i-am-glow.com/?page_id=61" title="Hello Clone!">Hello Clone!</a></li>
+<li class="page_item page-item-75"><a href="http://i-am-glow.com/?page_id=75" title="Hello Three.js">Hello Three.js</a></li>
+<li class="page_item page-item-96"><a href="http://i-am-glow.com/?page_id=96" title="Hello FBO">Hello FBO</a></li>
+<li class="page_item page-item-173"><a href="http://i-am-glow.com/?page_id=173" title="Hello Textures!">Hello Textures!</a></li>
+</ul>
+
+
+<div id="sidebarTitle"><span class="text">FOLLOW ON TWITTER</span></div>
+<ul>
+	<li><a href="http://www.twitter.com/mikaelemtinger">Mikael Emtinger</a></li>
+	<li><a href="http://www.twitter.com/olov">Olov Lassus</a></li>
+</ul>
+<div id="sidebarTitle"><span class="text">CIRCLE US ON G+</span></div>
+<a href="https://plus.google.com/104860497579148778310?prsrc=3" style="text-decoration: none;"><img src="./icons-and-styles/github-icon.png" width="32" height="32" style="border: 0;"></a><p>This blog uses a theme dubbed <strong><a href="http://p41studios.com/">Angebot by P41 Studios.</a></strong>.</p>
+</div>
+</div></body></html>
