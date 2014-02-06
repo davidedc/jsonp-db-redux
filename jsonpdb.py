@@ -58,8 +58,8 @@ class Add(webapp2.RequestHandler):
   def get(self):
     logging.debug('add being done')
     if self.request.get('callback') and len(self.request.GET.keys()) >= 2:
-        className = str(self.request.GET.keys()[0])
-        jsonStr = urllib.unquote(str(self.request.get(className)))
+        className = str(self.request.get('kind') )
+        jsonStr = str(self.request.get('json') )
         jsonObj = json.loads(jsonStr)
         objEntity = createEntity(className, jsonObj)
         self.response.out.write(self.request.get('callback') + "(\"" + str(objEntity.put()) + "\");")
@@ -74,10 +74,10 @@ class Get(webapp2.RequestHandler):
   def get(self):
     
     if self.request.get('callback') and len(self.request.GET.keys()) >= 2:
-        className = str(self.request.GET.keys()[0])
+        className = str(self.request.get('kind') )
         if str.lower(className) == "callback":
             raise Exception("Expected JSON object name as first parameter.")
-        classString = str(self.request.get(className))
+        classString = str(self.request.get('filter') )
         if classString == "*":
             #Process get request for all objects of a type
             objEntity = createEntity(className, None)
