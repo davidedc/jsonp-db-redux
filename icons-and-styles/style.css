@@ -1,0 +1,58 @@
+/*
+Theme Name: Angebot - Experimental Themes Project
+Theme Author: Patrick Algrim
+Theme URI: http://p41studios.com
+Author URI: http://p41studios.com
+Theme Description: An experimental theme by <a href="http://p41studios.com">P41 Studios</a> and <a href="http://hellyeahdude.com">hellyeahdude.com</a>
+*/
+/* ffff3d */
+
+body {font:normal 11pt/16pt Arial, Helvetica, Sans-serif;color:#000;margin:0;padding:0;}
+a, a:visited, a:hover {color:#000;text-decoration:none;outline:none;}
+
+#grid_hold {width:900px;margin:3.8em auto;}
+#header {width:900px;margin:0 auto;}
+#title {width:900px;margin:0 0 1.4em 0;padding:0;}
+#title span.blog_title {margin:0 0 0 0px;border-bottom:8px solid #000;font:bold 21pt/24pt Arial, Helvetica, Sans-serif;text-transform:uppercase;letter-spacing:1px;}
+#title span.blog_title a {text-decoration:none;}
+#about {width:500px;margin:0 0 4.0em 0;text-align:left;font:500 11pt/16pt Arial, Helvetica, Sans-serif;color:#000;}
+#meta_header {width:520px;margin:0.8em 20px 0 0;max-width:520px;padding:0;font:normal 9pt/14pt Arial, Helvetica, Sans-serif;}
+#meta_header p {margin:0.3em 0 0 0;}
+#meta_header span.date {margin:0;font:900 7pt/7pt Arial, Helvetica, Sans-serif;text-transform:uppercase;letter-spacing:1px;}
+#meta_header h1 {font:900 21pt/24pt Helvetica, Sans-serif;color:#000;text-transform:uppercase;margin:0.4em 0 0 0;}
+#meta_header h1 a {font:900 21pt/24pt Helvetica, Sans-serif;color:#000;}
+#meta_header h2 {font:900 9pt/13pt Arial, Helvetica, Sans-serif;color:#000;margin:0.6em 0 0 0;}
+#navigate {margin:0 0 0 540px;width:360px;font:normal 9pt/12pt Arial, Helvetica, Sans-serif;color:#000;}
+#navigate span.big {font:normal 12pt/12pt Georgia, Times, Arial, Sans-serif;color:#000;}
+#content_hold {width:600px;margin:0 auto;margin:0 0 0 0;float:left}
+#content {width:500px;margin:0 20px 2em 0;padding:0 20px 20px 0;}
+#content a, #content a:hover, #content a:visited {font-weight:bold;}
+#content p {margin:0 0 1.2em 0;}
+#content img {margin:0 0 0 -20px;}
+#comments_wrap {width:900px;padding:0 0;margin:0 0 0 -120px;}
+#logged_in {padding:0 0 0 120px;}
+#labels {width:90px;margin-top:0.2em;display:block;margin-right:10px;padding:1em 0 0 10px;float:left;font:8.5pt/11pt Helvetica, Helvetica Neue, Arial, sans-serif;color:#000;}
+#labels p {margin:1.2em 0 1.4em 0;}
+#inputs {width:557px;margin-top:0.8em;float:left;padding:1em 0 0 10px;}
+#inputs p {margin:0 0 0.8em 0;}
+#submit {color:#000;font:normal 13pt/16pt Arial, Helvetica, Sans-serif;}
+p.submit {padding-bottom:1.2em;}
+p.submit_admin {padding-bottom:1.2em;margin:0 0 0 120px;}
+.a_comment_wrap {width:920px;margin:2em 0 0 0;float:left;}
+.gravatar {width:90px;margin-left:20px;float:left;}
+.gravatar img {width:40px;height:40px;margin-left:20px;display:block;float:left;} 
+.comment_text {width:557px;float:left;padding:0 0 10px 10px;margin-bottom:0;font:10pt/13pt Helvetica, Helvetica Neue, Arial;}
+.no_comment {width:557px;float:left;padding:0 0 10px 120px;margin-bottom:0;font:10pt/13pt Helvetica, Helvetica Neue, Arial;}
+.comment_meta {margin:0 0 0.8em 0;color:#000;font-weight:bold;}
+h2.comments {margin:1em 0 0 120px;font:bold 12pt/14pt Arial, Helvetica, Sans-serif;color:#000;}
+h2.comments_loggedin {margin:1em 0 0 120px;font:bold 12pt/14pt Arial, Helvetica, Sans-serif;color:#000;}
+#sidebar a {text-decoration:none;}
+#sidebar {width:250px;float:left;margin:16px 0 0 0;font:normal 11pt/16pt Arial, Helvetica, Sans-serif;}
+#sidebar h1 {font:900 10pt/13pt Arial, Helvetica, Sans-serif;color:#000;text-transform:uppercase;margin:0 0 0.8em 0;}
+#sidebarTitle {margin-bottom:0.4em;padding:0;}
+#sidebarTitle span.text {font:900 11pt/16pt Arial, Helvetica, Sans-serif;color:#000;border-bottom:4px solid #000;}
+#sidebar ul {list-style:none;margin:0 0 0.8em 0;padding:0;}
+#sidebar ul li {list-style:none;margin:0;padding:0;}
+#block {width:180px;border-left:4px solid #000;margin:6em 0 0 0;padding:0 0 0 10px;}
+#footer {width:180px;display:block;height:1px;border-top:3px solid #000;}
+div.clear {clear:both;}
