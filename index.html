@@ -10,6 +10,7 @@
 	<style id="clearly_highlighting_css" type="text/css">/* selection */ html.clearly_highlighting_enabled ::-moz-selection { background: rgba(246, 238, 150, 0.99); } html.clearly_highlighting_enabled ::selection { background: rgba(246, 238, 150, 0.99); } /* cursor */ html.clearly_highlighting_enabled {    /* cursor and hot-spot position -- requires a default cursor, after the URL one */    cursor: url("chrome-extension://pioclpoplcdbaefihamjohnefbikjilc/clearly/images/highlight--cursor.png") 14 16, text; } /* highlight tag */ em.clearly_highlight_element {    font-style: inherit !important; font-weight: inherit !important;    background-image: url("chrome-extension://pioclpoplcdbaefihamjohnefbikjilc/clearly/images/highlight--yellow.png");    background-repeat: repeat-x; background-position: top left; background-size: 100% 100%; } /* the delete-buttons are positioned relative to this */ em.clearly_highlight_element.clearly_highlight_first { position: relative; } /* delete buttons */ em.clearly_highlight_element a.clearly_highlight_delete_element {    display: none; cursor: pointer;    padding: 0; margin: 0; line-height: 0;    position: absolute; width: 34px; height: 34px; left: -17px; top: -17px;    background-image: url("chrome-extension://pioclpoplcdbaefihamjohnefbikjilc/clearly/images/highlight--delete-sprite.png"); background-repeat: no-repeat; background-position: 0px 0px; } em.clearly_highlight_element a.clearly_highlight_delete_element:hover { background-position: -34px 0px; } /* retina */ @media (min--moz-device-pixel-ratio: 2), (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {    em.clearly_highlight_element { background-image: url("chrome-extension://pioclpoplcdbaefihamjohnefbikjilc/clearly/images/highlight--yellow@2x.png"); }    em.clearly_highlight_element a.clearly_highlight_delete_element { background-image: url("chrome-extension://pioclpoplcdbaefihamjohnefbikjilc/clearly/images/highlight--delete-sprite@2x.png"); background-size: 68px 34px; } } </style><style>[touch-action="none"]{ -ms-touch-action: none; touch-action: none; }[touch-action="pan-x"]{ -ms-touch-action: pan-x; touch-action: pan-x; }[touch-action="pan-y"]{ -ms-touch-action: pan-y; touch-action: pan-y; }[touch-action="scroll"],[touch-action="pan-x pan-y"],[touch-action="pan-y pan-x"]{ -ms-touch-action: pan-x pan-y; touch-action: pan-x pan-y; }
   .indentedLine {
       margin-left: 2em;
+      margin-bottom: 1em;
   }
   </style></head>
 
@@ -26,39 +27,8 @@
 </div>
 </div>
 <div id="content_hold">
-
-		
-	
-	
-
-		
-	
-	
 		
 	<h1>A few updates</h1>
-	
-		
-	
-	
-		
-	
-	
-		
-	
-	
-		
-	
-	
-		
-	
-	
-		
-	
-	
-		
-	
-	
-		
 	
 	<div id="content">
 		<p><strong>Several people have asked me why they should use GLOW when there’re a lot more competent libraries out there. It’s a good question, which I’ll try to answer here.</strong></p>
@@ -117,34 +87,36 @@ shader.draw();
   <div class="indentedLine">http://localhost:8080/add?<i>storeKey</i>=<i>jsonObj</i>&amp;callback=<i>callbackFunc</i></div>
   
   <div class="indentedLine">
-  <br>
   <b>Example:</b>
-  <br>
   <div class="indentedLine">http://localhost:8080/add?myFoo={"foo":"bar","baz":9}&callback=func</div>
 
-  <br>
   <b>Response:</b>
-  <br>
   <div class="indentedLine">func('agNpZWRyDQsSB2NvbnRhY3QYAQw'); <small> (item key is unique to this object)</small></div>
   </div>
   
 
 
-  <h4>Retrieve by item key</h4>
+  <h3>Retrieve by item key</h3>
   
-  <strong>http://localhost:8080/get?<i>storeKey</i>=<i>itemKey</i>&callback=<i>callbackFunc</i></strong>
+  <div class="indentedLine">http://localhost:8080/get?<i>storeKey</i>=<i>itemKey</i>&callback=<i>callbackFunc</i></div>
+  <div class="indentedLine">
   <b>Example:</b>
-  <code>http://localhost:8080/get?myFoo=agNpZWRyDQsSB2NvbnRhY3QYAQw&callback=func</code>
-  <b>Response:</b> <code>func({"foo":"bar","baz":9});</code>
+  <div class="indentedLine" style="
+    font-size: smaller;
+">http://localhost:8080/get?myFoo=agNpZWRyDQsSB2NvbnRhY3QYAQw&callback=func</div>
+  <b>Response:</b>
+  <div class="indentedLine">func({"foo":"bar","baz":9});</div>
+  </div>
 
 
-  <h4>Retrieve all items by storeKey</h4>
-  <p>Pass an empty object.</p>
-  <strong>http://localhost:8080/get?<i>storeKey</i>={}&callback=<i>callbackFunc</i></strong>
+  <h3>Retrieve all items by storeKey</h3>
+  <div class="indentedLine">http://localhost:8080/get?<i>storeKey</i>={}&callback=<i>callbackFunc</i></div>
+  <div class="indentedLine">
   <b>Example:</b>
-  <code>http://localhost:8080/get?myFoo={}&callback=func</code>
-  <b>Response:</b> <code>func([{"foo":"bar","baz":9},{"foo":"bar2","baz":10}]);</code>
-
+  <div class="indentedLine">http://localhost:8080/get?myFoo=*&callback=func</div>
+  <b>Response:</b>
+  <div class="indentedLine">func([{"foo":"bar","baz":9},{"foo":"bar2","baz":10}]);</div>
+  </div>
 
   <h4>Retrieve specific items by query and storeKey</h4>
   <p>Pass an object that to match against. </p> 
