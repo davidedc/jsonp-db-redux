@@ -54,12 +54,10 @@ class MainPage(webapp2.RequestHandler):
   def get(self):
     self.redirect("index.html")
 
-class Add(webapp2.RequestHandler):
-  def get(self):
-    logging.debug('add being done')
-    if self.request.get('callback') and len(self.request.GET.keys()) >= 2:
-        className = str(self.request.get('kind') )
-        jsonStr = str(self.request.get('json') )
+class Put(webapp2.RequestHandler):
+  def get(self,className,jsonStr):
+    logging.debug('put being done')
+    if self.request.get('callback') and len(self.request.GET.keys()) >= 2:        
         jsonObj = json.loads(jsonStr)
         objEntity = createEntity(className, jsonObj)
         self.response.out.write(self.request.get('callback') + "(\"" + str(objEntity.put()) + "\");")
@@ -181,7 +179,7 @@ class CleanAll(webapp2.RequestHandler):
 
 application = webapp2.WSGIApplication(
                                      [('/', MainPage),
-                                      ('/add', Add),
+                                      (r'/put/kinds/([^/]*)/(.*)', Put),
                                       ('/get', Get),
                                       ('/cleanAll', CleanAll), # strip for no auto cleanup
                                       ('/whenLastCleaned', WhenLastCleaned), # strip for no auto cleanup

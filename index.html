@@ -24,7 +24,14 @@
     border-bottom:1px solid #313030;
     margin-bottom:1em;
   }
+  #countdown {
+    text-align: center;
+    font-size: large;
+    background-color: black;
+    color: white;
+  }
   </style></head>
+
 
 <body>
 
@@ -34,74 +41,34 @@
 <div id="title"><span class="blog_title">JSON-P DB Redux</span></div>
 <div id="about">
 	
-    JSON-P DB Redux utilizes Google App Engine's datastore in order to provide a persistent warehouse for arbitrary JSON objects that are made easily accessible from client-side javascript code via <a href="http://www.json.com/2007/12/24/jsonp-header-transfer-proposal/">JSON-P</a>.
+    JSON-P DB Redux is a Google App Engine app to persist/retrieve JSON objects via simple client-side javascript <a href="http://www.json.com/2007/12/24/jsonp-header-transfer-proposal/">JSON-P</a> calls.
 
 </div>
 </div>
 <div id="content_hold">
 		
-	<h1>A few updates</h1>
-	
+	<h1>What is this good for?</h1>	
 	<div id="content">
-		<p><strong>Several people have asked me why they should use GLOW when there’re a lot more competent libraries out there. It’s a good question, which I’ll try to answer here.</strong></p>
-<p>GLOW is a WebGL wrapper, so you’re flying very LOW over the GL – that’s where the name comes from. This also means that GLOW is not for beginners but for you with some experience of WebGL or OpenGL. It also means that it’s not a WebGL 3D framework (like Three.js). It’s just a wrapper.  </p>
-<p>Given that you have experience, you’re probably familiar with code looking like…</p>
-<pre class="prettyprint">GL.useProgram( program );
-GL.uniformMatrix4fv( viewMatrixLoc, false, viewMatrix );
-GL.uniformMatrix4fv( projMatrixLoc, false, projMatrix );
-GL.uniform1i( sampleLoc, 0 );
-GL.activeTexture( GL.TEXTURE0 );
-GL.bindTexture( GL.TEXTURE_2D, texture );
-GL.enableVertexAttribArray(0);
-GL.enableVertexAttribArray(1);
-GL.enableVertexAttribArray(2);
-GL.bindBuffer( GL.ARRAY_BUFFER, vertices );
-GL.vertexAttribPointer( 0, 3, GL.FLOAT, false, 0, 0 );
-GL.bindBuffer( GL.ARRAY_BUFFER, uvs );
-GL.vertexAttribPointer( 1, 2, GL.FLOAT, false, 0, 0 );
-GL.bindBuffer( GL.ARRAY_BUFFER, normals );
-GL.vertexAttribPointer( 2, 3, GL.FLOAT, false, 0, 0 );
-GL.bindBuffer( GL.ELEMENT_ARRAY_BUFFER, faces );
-GL.drawElements( GL.TRIANGLES, 36, GL.UNSIGNED_SHORT, 0 );
-</pre>
-<p>This is pretty much the only way to draw something with WebGL – it’s designed this way. GLOW wraps this with a tiny overhead <a href="http://i-am-glow.com/?p=18">(most of which is the cache)</a> and all you do is…</p>
-<pre class="prettyprint">myShader.draw();</pre>
-<p>It’s in your shader code the magic happens and we think this is where you should spend your time. The shader data format is similar to the Three.js custom shader format – only slightly simpler, all to get you started within minutes… </p>
-<pre class="prettyprint">var shaderData = {
-  vertexShader: "...the vertex shader code...",
-  fragmentShader: "...the fragment shader code...",
-  data: {
-    viewMatrix: new GLOW.Matrix4(),
-    vertices: myFloat32ArrayWithVertices,
-    ...and all other uniforms and attributes...
-  }
-  elements: myUint16ArrayWithElements
-}
-
-var shader = new GLOW.Shader( shaderData );
-shader.draw();
-</pre>
-<p>GLOW comes with an extras library including matrices, vectors, hierarchies, geometry parsers and other helpful objects, all (most probably) working out of the box. As GLOW is just a wrapper, it’s compatible with all other WebGL libraries and can be used to extend these in all possible ways. </p>
-<p>So, the benefits are:</p>
-<ul>
-<li>You get close to WebGL without having to deal with the WebGL API</li>
-<li>It’s very easy to create shaders</li>
-<li>There are a lot of extras that helps you get going</li>
-<li>It’s compatible with all other WebGL frameworks</li>
-</ul>
-<p>Enjoy!</p>
+		<p><strong>This is good to have your own free and highly-hackable server to persist JSON objects from your web projects pages. Ready in 5 minutes.</strong></p>
+<p>There are several ways to persist data, this is one of them. The advantages of this are: a) it's free for any sane volume of traffic/data b) it's simple to set-up, you just need a gmail account and to tweak a couple of lines in the source files c) it's based on JSON-P which means that you can store/retrieve JSON from any page served from any domain (even just pages accessed as file://) d) the source is minimal and well-commented python code, meaning that it's easy to bend it / hack it.</p>
 	</div>
+
+  <h1>What's the general principle?</h1> 
+  <div id="content">
+<p>To store a JSON object, just send it to the server with a "kind" name and a callback. The "kind" name is just a name to later group (and fetch) together objects of the same kind, you can invent as many kind names as the types of data you are going to store. So if you want to store something like {first:'Maggie',last:'Lynch',phone:'884-7839'} then you are probably going to give it the kind of "contact" and issue a request like this: kind=contact&json={first:'Maggie',last:'Lynch',phone:'884-7839'}&callback=some-function. You are going to get a "key" as a response, which can be used to retrieve the object. Precise examples below. You'll use the "kind" to retrieve objects of the same kind as per examples below.</p>
+<p>To retrieve: you can either a) use the key returned by the store operation or b) retrieve all objects of a kind or c) retrieve all objects of a kind having one or more field values you specify.</p>
+  </div>
 
 <h2>API</h2>
 <div class="line-separator"></div>
 
   <h3>Storing data:</h3>
 
-  <div class="indentedLine">http://localhost:8080/add?kind=<i>storeKey</i>&json=<i>jsonObj</i>&amp;callback=<i>callbackFunc</i></div>
+  <div class="indentedLine">http://localhost:8080/put/kinds/<i>storeKey</i>/<i>jsonObj</i>?callback=<i>callbackFunc</i></div>
   
   <div class="indentedLine">
   <b>Example:</b>
-  <div class="indentedLine">http://localhost:8080/add?kind=myFoo&json={"foo":"bar","baz":9}&callback=func</div>
+  <div class="indentedLine">http://localhost:8080/put/kinds/myFoo/{"foo":"bar","baz":9}?callback=func</div>
 
   <b>Response:</b>
   <div class="indentedLine">func('agNpZWRyDQsSB2NvbnRhY3QYAQw'); <small> (item key is unique to this object)</small></div>
@@ -151,8 +118,10 @@ shader.draw();
 
 <select style="width:100%"  id="e9">
     <option value="jsonp-db-redux.appspot.com">jsonp-db-redux.appspot.com (preconfigured and running on Google App Engine)</option>
-    <option value="localhost:8080">localhost:8080 (local Google App Engine)</option>
+    <option value="localhost:8080">localhost:8080 (if you are running Google App Engine locally)</option>
 </select>
+
+<div id="countdown"></div>
 
 <script type="text/javascript" >
 
@@ -225,7 +194,7 @@ addInputBox();
 
 <br>
 <div class="rowTitle"><b>3.</b> Store the object:</div>
-<textarea id="step2" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/add?kind=contact&json='+JSON.stringify(contact)+'&callback=?', function(data){    $("#step2response").val(data);
+<textarea id="step2" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/put/kinds/contact/'+JSON.stringify(contact)+'?callback=?', function(data){    $("#step2response").val(data);
 });</textarea>
 <br>
 <input type="button" id="eval2" value="Store" />
@@ -292,7 +261,6 @@ You could use this as...
 
 
 
-<span id="countdown"></span>
   
 <h3>Debug:</h5>
 <div>
@@ -392,7 +360,7 @@ var countdown = document.getElementById("countdown");
     seconds = parseInt(seconds_left % 60);
      
     // format countdown string + set tag value
-    countdown.innerHTML = days + "d, " + hours + "h, "
+    countdown.innerHTML = "next server reset in: " + days + "d, " + hours + "h, "
     + minutes + "m, " + seconds + "s";  
 
     if (seconds_left <= 2) {
