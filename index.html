@@ -422,7 +422,7 @@ $(document).ready(function(){
    //debug area
     $('#debugvalue').next().click(function(){
       var textarea = $(this).parents('div:eq(0)').find('textarea');
-      $.getJSON('http://'+thedomain+'/get/kinds/'+ $('#debugvalue').val() +'/?filter=*&callback=?', function(data){
+      $.getJSON('http://'+selected_server+'/get/kinds/'+ $('#debugvalue').val() +'/?filter=*&callback=?', function(data){
        textarea.val(JSON.stringify(data));
       });
     });
