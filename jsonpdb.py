@@ -180,9 +180,9 @@ class CleanAll(webapp2.RequestHandler):
 
 application = webapp2.WSGIApplication(
                                      [('/', MainPage),
-                                      (r'/put/kinds/([^/]*)/(.*)', Put),
-                                      (r'/get/kinds/([^/]*)/keys/(.*)', GetWithKey),
-                                      (r'/get/kinds/([^/]*)/', GetWithFilter),
+                                      (r'/put/buckets/([^/]*)/(.*)', Put),
+                                      (r'/get/buckets/([^/]*)/keys/(.*)', GetWithKey),
+                                      (r'/get/buckets/([^/]*)/', GetWithFilter),
                                       ('/cleanAll', CleanAll), # strip for no auto cleanup
                                       ('/whenLastCleaned', WhenLastCleaned), # strip for no auto cleanup
                                       ],

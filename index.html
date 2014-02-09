@@ -73,11 +73,11 @@
 
   <h3>Storing data:</h3>
 
-  <div class="indentedLine">http://localhost:8080/put/kinds/<i>storeKey</i>/<i>jsonObj</i>?callback=<i>callbackFunc</i></div>
+  <div class="indentedLine">http://localhost:8080/put/buckets/<i>storeKey</i>/<i>jsonObj</i>?callback=<i>callbackFunc</i></div>
   
   <div class="indentedLine">
   <b>Example:</b>
-  <div class="indentedLine">http://localhost:8080/put/kinds/myFoo/{"foo":"bar","baz":9}?callback=func</div>
+  <div class="indentedLine">http://localhost:8080/put/buckets/myFoo/{"foo":"bar","baz":9}?callback=func</div>
 
   <b>Response:</b>
   <div class="indentedLine">func('agNpZWRyDQsSB2NvbnRhY3QYAQw'); <small> (item key is unique to this object)</small></div>
@@ -86,22 +86,22 @@
 
 
   <h3>Retrieve by item key:</h3>
-  <div class="indentedLine">http://localhost:8080/get/kinds/<i>storeKey</i>/keys/<i>itemKey</i>?callback=<i>callbackFunc</i></div>
+  <div class="indentedLine">http://localhost:8080/get/buckets/<i>storeKey</i>/keys/<i>itemKey</i>?callback=<i>callbackFunc</i></div>
   <div class="indentedLine">
   <b>Example:</b>
   <div class="indentedLine" style="
     font-size: smaller;
-">http://localhost:8080/get/kinds/myFoo/keys/agNpZWRyDQsSB2NvbnRhY3QYAQw?callback=func</div>
+">http://localhost:8080/get/buckets/myFoo/keys/agNpZWRyDQsSB2NvbnRhY3QYAQw?callback=func</div>
   <b>Response:</b>
   <div class="indentedLine">func({"foo":"bar","baz":9});</div>
   </div>
 
 
   <h3>Retrieve all items by storeKey:</h3>
-  <div class="indentedLine">http://localhost:8080/get/kinds/<i>storeKey</i>/?callback=<i>callbackFunc</i></div>
+  <div class="indentedLine">http://localhost:8080/get/buckets/<i>storeKey</i>/?callback=<i>callbackFunc</i></div>
   <div class="indentedLine">
   <b>Example:</b>
-  <div class="indentedLine">http://localhost:8080/get/kinds/myFoo/?filter=*&callback=func</div>
+  <div class="indentedLine">http://localhost:8080/get/buckets/myFoo/?filter=*&callback=func</div>
   <b>Response:</b>
   <div class="indentedLine">func([{"foo":"bar","baz":9},{"foo":"bar2","baz":10}]);</div>
   </div>
@@ -109,12 +109,12 @@
   <h3>Retrieve specific items by query and storeKey:</h3>
   <div class="indentedLine">
   You can pass an object to match against:
-  <div class="indentedLine">http://localhost:8080/get/kinds/<i>storeKey</i>/?filter=<i>jsonObjToMatch</i>&callback=<i>callbackFunc</i></div>
+  <div class="indentedLine">http://localhost:8080/get/buckets/<i>storeKey</i>/?filter=<i>jsonObjToMatch</i>&callback=<i>callbackFunc</i></div>
   ...or filter through '*' or the empty object {} to fetch all objects from a bucket:
-  <div class="indentedLine"> http://localhost:8080/get/kinds/<i>storeKey</i>/?filter=<i>*</i>&callback=<i>callbackFunc</i>
+  <div class="indentedLine"> http://localhost:8080/get/buckets/<i>storeKey</i>/?filter=<i>*</i>&callback=<i>callbackFunc</i>
 </div>
 <div class="indentedLine">
-  http://localhost:8080/get/kinds/<i>storeKey</i>/?filter=<i>{}</i>&callback=<i>callbackFunc</i></div>
+  http://localhost:8080/get/buckets/<i>storeKey</i>/?filter=<i>{}</i>&callback=<i>callbackFunc</i></div>
   </div>
   <div class="indentedLine">
   <b>Example</b>
@@ -210,7 +210,7 @@ addInputBox();
 
 <br>
 <div class="rowTitle"><b>3.</b> Store the object:</div>
-<textarea id="step2" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/put/kinds/contact/'+JSON.stringify(contact)+'?callback=?', function(data){    $("#step2response").val(data);
+<textarea id="step2" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/put/buckets/contact/'+JSON.stringify(contact)+'?callback=?', function(data){    $("#step2response").val(data);
 });</textarea>
 <br>
 <input type="button" id="eval2" value="Store" />
@@ -219,7 +219,7 @@ Response:<br><textarea id="step2response" rows="1" cols="45"></textarea>
 
 <br>
 <div class="rowTitle"><b>4.</b> Retrieve your object by key:</div>
-<textarea id="step3" style="height: 82px;" >$.getJSON('http://'+selected_server+'/get/kinds/contact/keys/'+$("#step2response").val()+'?callback=?', function(data){
+<textarea id="step3" style="height: 82px;" >$.getJSON('http://'+selected_server+'/get/buckets/contact/keys/'+$("#step2response").val()+'?callback=?', function(data){
   $("#step3response").val(JSON.stringify(data));
 });</textarea>
 <br>
@@ -229,7 +229,7 @@ Response:<br><textarea id="step3response" rows="3" cols="45"></textarea>
 
 <br>
 <div class="rowTitle"><b>5.</b> Retrieve all objects of a specific type:</div>
-<textarea id="step4" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/get/kinds/contact/?filter=*&callback=?', function(data){
+<textarea id="step4" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/get/buckets/contact/?filter=*&callback=?', function(data){
   $("#step4response").val(JSON.stringify(data));
 });</textarea>
 <br>
@@ -239,7 +239,7 @@ Response:<br><textarea id="step4response" rows="5" cols="45"></textarea>
 
 <br>
 <div class="rowTitle"><b>6.</b> Retrieve based on criteria:</div>
-<textarea id="step5"  style="height: 82px;" >$.getJSON('http://'+selected_server+'/get/kinds/contact/?filter={"name":"Cherokee"}&callback=?', function(data){
+<textarea id="step5"  style="height: 82px;" >$.getJSON('http://'+selected_server+'/get/buckets/contact/?filter={"name":"Cherokee"}&callback=?', function(data){
   $("#step5response").val(JSON.stringify(data));
 });</textarea>
 <br>
