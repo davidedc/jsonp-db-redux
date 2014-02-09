@@ -49,7 +49,7 @@
 		
 	<h1>What is this good for?</h1>	
 	<div id="content">
-		<p><strong>This is good to have your own free and highly-hackable server to persist JSON objects from your web projects pages. Ready in 5 minutes.</strong></p>
+		<p><strong>This is good to have your own free and highly-hackable server to persist JSON objects from your web projects. Ready in 5 minutes.</strong></p>
 <p>There are several ways to persist data, the characteristics of this particular method are:
 
 <ul>
@@ -58,6 +58,7 @@
 <li>it's simple to set-up, you just need a gmail account and to tweak a couple of lines in the source files</li>
 <li>it's based on JSON-P which means that you can store/retrieve JSON from any page served from any domain (even just pages opened from local file system)</li>
 <li>the source is minimal and well-commented python code, meaning that it's easy to bend it / hack it.</li>
+<li>it's dead easy to use</li>
 </ul>
 	</div>
 
@@ -85,32 +86,39 @@
 
 
   <h3>Retrieve by item key:</h3>
-  <div class="indentedLine">http://localhost:8080/get?kind=<i>storeKey</i>&filter=<i>itemKey</i>&callback=<i>callbackFunc</i></div>
+  <div class="indentedLine">http://localhost:8080/get/kinds/<i>storeKey</i>/keys/<i>itemKey</i>?callback=<i>callbackFunc</i></div>
   <div class="indentedLine">
   <b>Example:</b>
   <div class="indentedLine" style="
     font-size: smaller;
-">http://localhost:8080/get?kind=myFoo&filter=agNpZWRyDQsSB2NvbnRhY3QYAQw&callback=func</div>
+">http://localhost:8080/get/kinds/myFoo/keys/agNpZWRyDQsSB2NvbnRhY3QYAQw?callback=func</div>
   <b>Response:</b>
   <div class="indentedLine">func({"foo":"bar","baz":9});</div>
   </div>
 
 
   <h3>Retrieve all items by storeKey:</h3>
-  <div class="indentedLine">http://localhost:8080/get?kind=<i>storeKey</i>&filter=*&callback=<i>callbackFunc</i></div>
+  <div class="indentedLine">http://localhost:8080/get/kinds/<i>storeKey</i>/?callback=<i>callbackFunc</i></div>
   <div class="indentedLine">
   <b>Example:</b>
-  <div class="indentedLine">http://localhost:8080/get?kind=myFoo&filter=*&callback=func</div>
+  <div class="indentedLine">http://localhost:8080/get/kinds/myFoo/?filter=*&callback=func</div>
   <b>Response:</b>
   <div class="indentedLine">func([{"foo":"bar","baz":9},{"foo":"bar2","baz":10}]);</div>
   </div>
 
   <h3>Retrieve specific items by query and storeKey:</h3>
-  <div class="indentedLine">Pass an object to match against.</div>
-  <div class="indentedLine">http://localhost:8080/get?kind=<i>storeKey</i>&filter=<i>jsonObjToMatch</i>&callback=<i>callbackFunc</i></div>
+  <div class="indentedLine">
+  You can pass an object to match against:
+  <div class="indentedLine">http://localhost:8080/get/kinds/<i>storeKey</i>/?filter=<i>jsonObjToMatch</i>&callback=<i>callbackFunc</i></div>
+  ...or filter through '*' or the empty object {} to fetch all objects from a bucket:
+  <div class="indentedLine"> http://localhost:8080/get/kinds/<i>storeKey</i>/?filter=<i>*</i>&callback=<i>callbackFunc</i>
+</div>
+<div class="indentedLine">
+  http://localhost:8080/get/kinds/<i>storeKey</i>/?filter=<i>{}</i>&callback=<i>callbackFunc</i></div>
+  </div>
   <div class="indentedLine">
   <b>Example</b>
-  <div class="indentedLine">http://localhost:8080/get?kind=myFoo&filter={"foo":"bar2"}&callback=func</div>
+  <div class="indentedLine">http://localhost:8080/get/kind/myFoo/?filter={"foo":"bar2"}&callback=func</div>
   <b>Response:</b>
   <div class="indentedLine">func([{"foo":"bar2","baz":10}]);</div>
   </div>
@@ -211,7 +219,7 @@ Response:<br><textarea id="step2response" rows="1" cols="45"></textarea>
 
 <br>
 <div class="rowTitle"><b>4.</b> Retrieve your object by key:</div>
-<textarea id="step3" style="height: 82px;" >$.getJSON('http://'+selected_server+'/get?kind=contact&filter='+$("#step2response").val()+'&callback=?', function(data){
+<textarea id="step3" style="height: 82px;" >$.getJSON('http://'+selected_server+'/get/kinds/contact/keys/'+$("#step2response").val()+'?callback=?', function(data){
   $("#step3response").val(JSON.stringify(data));
 });</textarea>
 <br>
@@ -221,7 +229,7 @@ Response:<br><textarea id="step3response" rows="3" cols="45"></textarea>
 
 <br>
 <div class="rowTitle"><b>5.</b> Retrieve all objects of a specific type:</div>
-<textarea id="step4" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/get?kind=contact&filter=*&callback=?', function(data){
+<textarea id="step4" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/get/kinds/contact/?filter=*&callback=?', function(data){
   $("#step4response").val(JSON.stringify(data));
 });</textarea>
 <br>
@@ -231,7 +239,7 @@ Response:<br><textarea id="step4response" rows="5" cols="45"></textarea>
 
 <br>
 <div class="rowTitle"><b>6.</b> Retrieve based on criteria:</div>
-<textarea id="step5"  style="height: 82px;" >$.getJSON('http://'+selected_server+'/get?kind=contact&filter={"name":"Cherokee"}&callback=?', function(data){
+<textarea id="step5"  style="height: 82px;" >$.getJSON('http://'+selected_server+'/get/kinds/contact/?filter={"name":"Cherokee"}&callback=?', function(data){
   $("#step5response").val(JSON.stringify(data));
 });</textarea>
 <br>
@@ -270,7 +278,7 @@ You could use this as...
 
 
   
-<h3>Debug:</h5>
+<h3>Debug:</h3>
 <div>
   <p>View the contents of: <input id="debugvalue" type="text"/><input type="button" value="go"/></p>
   <textarea rows="5" cols="45"></textarea>
@@ -368,7 +376,7 @@ var countdown = document.getElementById("countdown");
     seconds = parseInt(seconds_left % 60);
      
     // format countdown string + set tag value
-    countdown.innerHTML = "next server reset in: " + days + "d, " + hours + "h, "
+    countdown.innerHTML = "all server content will be cleared in: " + hours + "h, "
     + minutes + "m, " + seconds + "s";  
 
     if (seconds_left <= 2) {
@@ -414,7 +422,7 @@ $(document).ready(function(){
    //debug area
     $('#debugvalue').next().click(function(){
       var textarea = $(this).parents('div:eq(0)').find('textarea');
-      $.getJSON('http://'+thedomain+'/get?kind='+ $('#debugvalue').val() +'&filter=*&callback=?', function(data){
+      $.getJSON('http://'+thedomain+'/get/kinds/'+ $('#debugvalue').val() +'/?filter=*&callback=?', function(data){
        textarea.val(JSON.stringify(data));
       });
     });

@@ -68,15 +68,26 @@ class Put(webapp2.RequestHandler):
             entityKind = EntitiesKinds(theKind = className)
             entityKind.put()
 
-class Get(webapp2.RequestHandler):
-  def get(self):
+class GetWithKey(webapp2.RequestHandler):
+  def get(self,className,keyStr):
     
-    if self.request.get('callback') and len(self.request.GET.keys()) >= 2:
-        className = str(self.request.get('kind') )
-        if str.lower(className) == "callback":
-            raise Exception("Expected JSON object name as first parameter.")
+    if self.request.get('callback'):
+        #Query for object based on a unique key
+        objClass = type(className, (db.Model,), {})
+        ent = db.get(keyStr)
+        if ent:
+            objDict = dict()
+            for k in ent.__dict__["_entity"].keys():
+                    objDict[str(k)] = json.loads(ent.__dict__["_entity"][k])
+            self.response.out.write(str(self.request.get('callback')) + "(" + json.dumps(objDict) + ");")
+
+class GetWithFilter(webapp2.RequestHandler):
+  def get(self,className):
+    
+    if self.request.get('callback'):
         classString = str(self.request.get('filter') )
-        if classString == "*":
+        logging.debug('filter: ' + classString)
+        if classString == "*" or classString == '':
             #Process get request for all objects of a type
             objEntity = createEntity(className, None)
             query = objEntity.all()
@@ -87,16 +98,6 @@ class Get(webapp2.RequestHandler):
                         objDict[str(k)] = json.loads(ent.__dict__["_entity"][k])
                 objArr.append(objDict)
             self.response.out.write(str(self.request.get('callback')) + "(" + json.dumps(objArr) + ");")
-        elif not re.compile('\W').match(classString):
-            #Query for object based on a unique key
-            objClass = type(className, (db.Model,), {})
-            keyStr = classString
-            ent = db.get(keyStr)
-            if ent:
-                objDict = dict()
-                for k in ent.__dict__["_entity"].keys():
-                        objDict[str(k)] = json.loads(ent.__dict__["_entity"][k])
-                self.response.out.write(str(self.request.get('callback')) + "(" + json.dumps(objDict) + ");")
         else:
             jsonStr = urllib.unquote(classString)
             jsonObj = json.loads(jsonStr)
@@ -180,7 +181,8 @@ class CleanAll(webapp2.RequestHandler):
 application = webapp2.WSGIApplication(
                                      [('/', MainPage),
                                       (r'/put/kinds/([^/]*)/(.*)', Put),
-                                      ('/get', Get),
+                                      (r'/get/kinds/([^/]*)/keys/(.*)', GetWithKey),
+                                      (r'/get/kinds/([^/]*)/', GetWithFilter),
                                       ('/cleanAll', CleanAll), # strip for no auto cleanup
                                       ('/whenLastCleaned', WhenLastCleaned), # strip for no auto cleanup
                                       ],
