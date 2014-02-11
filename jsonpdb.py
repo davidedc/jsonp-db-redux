@@ -69,9 +69,13 @@ class Put(webapp2.RequestHandler):
             entityKind.put()
 
 class GetWithKey(webapp2.RequestHandler):
-  def get(self,className,keyStr):
+  def get(self,keyStr):
     
     if self.request.get('callback'):
+        # the class name is encoded in the key string
+        # (in a non-cryptographically secure way)
+        # see https://developers.google.com/appengine/docs/python/datastore/keyclass?csw=1#Key_kind
+        className = str(db.Key(keyStr).kind())
         #Query for object based on a unique key
         objClass = type(className, (db.Model,), {})
         ent = db.get(keyStr)
@@ -181,7 +185,7 @@ class CleanAll(webapp2.RequestHandler):
 application = webapp2.WSGIApplication(
                                      [('/', MainPage),
                                       (r'/put/buckets/([^/]*)/(.*)', Put),
-                                      (r'/get/buckets/([^/]*)/keys/(.*)', GetWithKey),
+                                      (r'/get/keys/(.*)', GetWithKey),
                                       (r'/get/buckets/([^/]*)/', GetWithFilter),
                                       ('/cleanAll', CleanAll), # strip for no auto cleanup
                                       ('/whenLastCleaned', WhenLastCleaned), # strip for no auto cleanup
