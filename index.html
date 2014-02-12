@@ -56,6 +56,7 @@
 <li>it's stored in the cloud so it will persist across browsers and users</li>
 <li>it's free for any sane volume of traffic/data</li>
 <li>it's simple to set-up, you just need a gmail account and to tweak a couple of lines in the source files</li>
+<li>it allows basic querying on the stored objects (equality test of one or more of its fields)</li>
 <li>it's based on JSON-P which means that you can store/retrieve JSON from any page served from any domain (even just pages opened from local file system)</li>
 <li>the source is minimal and well-commented python code, meaning that it's easy to bend it / hack it.</li>
 <li>it's dead easy to use</li>
@@ -68,12 +69,12 @@
 <p>To retrieve: you can either a) use the key returned by the store operation or b) retrieve all objects in a bucket or c) retrieve all objects (from a bucket) having one or more field values you specify.</p>
   </div>
 
-<h2>API</h2>
+<h1>API</h1>
 <div class="line-separator"></div>
 
   <h3>Storing data:</h3>
 
-  <div class="indentedLine">http://localhost:8080/put/buckets/<i>storeKey</i>/<i>jsonObj</i>?callback=<i>callbackFunc</i></div>
+  <div class="indentedLine">http://localhost:8080/put/buckets/<i>bucketName</i>/<i>jsonObj</i>?callback=<i>callbackFunc</i></div>
   
   <div class="indentedLine">
   <b>Example:</b>
@@ -97,8 +98,8 @@
   </div>
 
 
-  <h3>Retrieve all items by storeKey:</h3>
-  <div class="indentedLine">http://localhost:8080/get/buckets/<i>storeKey</i>/?callback=<i>callbackFunc</i></div>
+  <h3>Retrieve all items in a bucket:</h3>
+  <div class="indentedLine">http://localhost:8080/get/buckets/<i>bucketName</i>/?callback=<i>callbackFunc</i></div>
   <div class="indentedLine">
   <b>Example:</b>
   <div class="indentedLine">http://localhost:8080/get/buckets/myFoo/?filter=*&callback=func</div>
@@ -106,21 +107,37 @@
   <div class="indentedLine">func([{"foo":"bar","baz":9},{"foo":"bar2","baz":10}]);</div>
   </div>
 
-  <h3>Retrieve specific items by query and storeKey:</h3>
+  <h3>Retrieve specific items by query (within a bucket)</h3>
   <div class="indentedLine">
   You can pass an object to match against:
-  <div class="indentedLine">http://localhost:8080/get/buckets/<i>storeKey</i>/?filter=<i>jsonObjToMatch</i>&callback=<i>callbackFunc</i></div>
+  <div class="indentedLine">http://localhost:8080/get/buckets/<i>bucketName</i>/?filter=<i>jsonObjToMatch</i>&callback=<i>callbackFunc</i></div>
   ...or filter through '*' or the empty object {} to fetch all objects from a bucket:
-  <div class="indentedLine"> http://localhost:8080/get/buckets/<i>storeKey</i>/?filter=<i>*</i>&callback=<i>callbackFunc</i>
+  <div class="indentedLine"> http://localhost:8080/get/buckets/<i>bucketName</i>/?filter=<i>*</i>&callback=<i>callbackFunc</i>
 </div>
 <div class="indentedLine">
-  http://localhost:8080/get/buckets/<i>storeKey</i>/?filter=<i>{}</i>&callback=<i>callbackFunc</i></div>
+  http://localhost:8080/get/buckets/<i>bucketName</i>/?filter=<i>{}</i>&callback=<i>callbackFunc</i></div>
   </div>
   <div class="indentedLine">
   <b>Example</b>
   <div class="indentedLine">http://localhost:8080/get/kind/myFoo/?filter={"foo":"bar2"}&callback=func</div>
   <b>Response:</b>
   <div class="indentedLine">func([{"foo":"bar2","baz":10}]);</div>
+  </div>
+
+
+  <h1>Data privacy (or lack thereof)</h1> 
+  <div id="content">
+<p>This is mostly a prototyping help tool, there should be no strong expectations of privacy.
+
+<ul>
+<li>Data is sent over the network in unencryped GETs</li>
+<li>Data is stored in clear in the datastore</li>
+<li>No user authentication is performed</li>
+<li>Anyone who can guess a bucket name can retrieve the full contents of the bucket</li>
+<li>A "key" contains (with a simple encoding) the name of the bucket the object is in. Hence, any object key can lead to the contents of any other object in the same bucket</li>
+</ul>
+
+</p>
   </div>
 
 
