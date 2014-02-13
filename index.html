@@ -46,10 +46,15 @@
 </div>
 </div>
 <div id="content_hold">
+
+  <h1>Preliminaries</h1> 
+  <div id="content">
+    <p>JSON-P DB Redux is the resurrection, update and a slight modification of the abandoned <a href="http://jsonpdb.appspot.com/index.html">JSON-P DB</a> project by <a href="https://plus.google.com/+AdamRibaudo/posts">Adam Ribaudo</a> and <a href="https://plus.google.com/+PaulIrish/posts">Paul Irish</a>.</p>
+  </div>
 		
 	<h1>What is this good for?</h1>	
 	<div id="content">
-		<p><strong>This is good to have your own free and highly-hackable server to persist JSON objects from your web projects. Ready in 5 minutes.</strong></p>
+		<p><strong>This is good for having your own free and highly-hackable server to persist JSON objects from your web projects. Ready in 5 minutes.</strong></p>
 <p>There are several ways to persist data, the characteristics of this particular method are:
 
 <ul>
@@ -130,7 +135,7 @@
 <p>This is mostly a prototyping help tool, there should be no strong expectations of privacy.
 
 <ul>
-<li>Data is sent over the network in unencryped GETs</li>
+<li>Data is sent over the network in unencryped GETs over http</li>
 <li>Data is stored in clear in the datastore</li>
 <li>No user authentication is performed</li>
 <li>Anyone who can guess a bucket name can retrieve the full contents of the bucket</li>
@@ -264,6 +269,22 @@ Response:<br><textarea id="step4response" rows="5" cols="45"></textarea>
 <br>
 Response:<br><textarea id="step5response" rows="5" cols="45"></textarea>
 
+  <h1>Differences with the original JSON-P DB project</h1> 
+  <div id="content">
+<ul>
+<li>updated to make it work again with the current Google App Engine python framework</li>
+<li>changed/renamed the concepts of storeKey, itemKey, key</li>
+<li>almost REST-like api</li>
+<li>fetching items by key doesn't need the bucket name to be specified.</li>
+</ul>
+  </div>
+
+  <h1>Implementation notes</h1> 
+  <div id="content">
+    <p>Each bucket is a datastore <a href="https://developers.google.com/appengine/docs/python/datastore/entities#Python_Kinds_and_identifiers">kind</a> (similar to a table of traditional databases). While queries by key don't need the bucket to be specified (because the kind is encoded in the key), the other queries only operate within a particular kind, so they need the bucket to be specified.</p>
+    <p>Each JSON object is stored as a datastore <a href="https://developers.google.com/appengine/docs/python/datastore/entities">entity</a> (similar to a record of a traditional database), with separate <a href="https://developers.google.com/appengine/docs/python/datastore/entities#Python_Properties_and_value_types">properties</a> for each of the JSON object name/value pairs. This very fact that each key/value JSON pair is stored as a separate property of the entity is what makes the filtering by name/value identity(ies) possible.</p>
+    <p><strong>Why no exploding indexes?</strong> You might be wondering, since each object can have an arbitrary number of (different) key/value pairs and the filtering allows you to filter by identity of any number of key/values, how can that efficiently be done without exploding indexes? The answer in a special Merge-join technicnique that works "well enough" in most cases. You could potentially get a "NeedIndexError", but this is rare for any practical/compact data set. See <a href="http://www.allbuttonspressed.com/blog/django/2010/01/An-App-Engine-limitation-you-didn-t-know-about">this article</a> for an analysis.</p>
+  </div>
     
     
     <h2>Did we mention... ?</h2>
