@@ -56,34 +56,42 @@ class MainPage(webapp2.RequestHandler):
 
 class Put(webapp2.RequestHandler):
   def get(self,className,jsonStr):
-    logging.debug('put being done')
-    if self.request.get('callback') and len(self.request.GET.keys()) >= 2:        
-        jsonObj = json.loads(jsonStr)
-        objEntity = createEntity(className, jsonObj)
-        self.response.out.write(self.request.get('callback') + "(\"" + str(objEntity.put()) + "\");")
+    logging.error('put being done')
+    logging.error('self.request.get: ' + self.request.get('callback'))
+    logging.error('keys: ' + str(self.request.GET.keys()))
+    logging.error('len: ' + str(len(self.request.GET.keys())))
+    jsonObj = json.loads(jsonStr)
+    objEntity = createEntity(className, jsonObj)
+    theKey = str(objEntity.put())
+    if self.request.get('callback'):
+        self.response.out.write(self.request.get('callback') + "(\"" + theKey + "\");")
+    else:
+        self.response.out.write(theKey )
 
+    entityKind = EntitiesKinds(theKind = className)
+    v = EntitiesKinds.all().filter('theKind =', className)
+    if not v.get():
         entityKind = EntitiesKinds(theKind = className)
-        v = EntitiesKinds.all().filter('theKind =', className)
-        if not v.get():
-            entityKind = EntitiesKinds(theKind = className)
-            entityKind.put()
+        entityKind.put()
 
 class GetWithKey(webapp2.RequestHandler):
-  def get(self,keyStr):
-    
-    if self.request.get('callback'):
-        # the class name is encoded in the key string
-        # (in a non-cryptographically secure way)
-        # see https://developers.google.com/appengine/docs/python/datastore/keyclass?csw=1#Key_kind
-        className = str(db.Key(keyStr).kind())
-        #Query for object based on a unique key
-        objClass = type(className, (db.Model,), {})
-        ent = db.get(keyStr)
-        if ent:
-            objDict = dict()
-            for k in ent.__dict__["_entity"].keys():
-                    objDict[str(k)] = json.loads(ent.__dict__["_entity"][k])
-            self.response.out.write(str(self.request.get('callback')) + "(" + json.dumps(objDict) + ");")
+  def get(self,keyStr):    
+    # the class name is encoded in the key string
+    # (in a non-cryptographically secure way)
+    # see https://developers.google.com/appengine/docs/python/datastore/keyclass?csw=1#Key_kind
+    className = str(db.Key(keyStr).kind())
+    #Query for object based on a unique key
+    objClass = type(className, (db.Model,), {})
+    ent = db.get(keyStr)
+    if ent:
+        objDict = dict()
+        for k in ent.__dict__["_entity"].keys():
+                objDict[str(k)] = json.loads(ent.__dict__["_entity"][k])
+        objectDump = json.dumps(objDict)
+        if self.request.get('callback'):
+            self.response.out.write(str(self.request.get('callback')) + "(" + objectDump + ");")
+        else:
+            self.response.out.write(objectDump)
 
 class GetWithFilter(webapp2.RequestHandler):
   def get(self,className):
@@ -91,7 +99,7 @@ class GetWithFilter(webapp2.RequestHandler):
     if self.request.get('callback'):
         classString = str(self.request.get('filter') )
         logging.debug('filter: ' + classString)
-        if classString == "*" or classString == '':
+        if classString == '':
             #Process get request for all objects of a type
             objEntity = createEntity(className, None)
             query = objEntity.all()

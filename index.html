@@ -18,12 +18,6 @@
   textArea {
       width: 100%;
   }
-  .line-separator{
-    height:1px;
-    background:#717171;
-    border-bottom:1px solid #313030;
-    margin-bottom:1em;
-  }
   #countdown {
     text-align: center;
     font-size: large;
@@ -41,7 +35,7 @@
 <div id="title"><span class="blog_title">JSON-P DB Redux</span></div>
 <div id="about">
 	
-    JSON-P DB Redux is a Google App Engine app to persist/retrieve JSON objects via simple client-side javascript <a href="http://www.json.com/2007/12/24/jsonp-header-transfer-proposal/">JSON-P</a> calls.
+    JSON-P DB Redux is a Google App Engine app to persist/retrieve JSON objects via simple client-side javascript <a href="http://www.json.com/2007/12/24/jsonp-header-transfer-proposal/">JSON-P</a> calls. Curl also supported.
 
 </div>
 </div>
@@ -74,8 +68,7 @@
 <p>To retrieve: you can either a) use the key returned by the store operation or b) retrieve all objects in a bucket or c) retrieve all objects (from a bucket) having one or more field values you specify.</p>
   </div>
 
-<a id="API"><h1>API</h1></a>
-<div class="line-separator"></div>
+<a id="JSONPAPI"><h1>JSONP API</h1></a>
 
   <h3>Storing data:</h3>
 
@@ -107,28 +100,71 @@
   <div class="indentedLine">http://localhost:8080/get/buckets/<i>bucketName</i>/?callback=<i>callbackFunc</i></div>
   <div class="indentedLine">
   <b>Example:</b>
-  <div class="indentedLine">http://localhost:8080/get/buckets/myFoo/?filter=*&callback=func</div>
+  <div class="indentedLine">http://localhost:8080/get/buckets/myFoo/?callback=func</div>
   <b>Response:</b>
   <div class="indentedLine">func([{"foo":"bar","baz":9},{"foo":"bar2","baz":10}]);</div>
   </div>
 
   <h3>Retrieve specific items by query (within a bucket)</h3>
   <div class="indentedLine">
-  You can pass an object to match against:
+  You pass an object - all fields will have to match:
   <div class="indentedLine">http://localhost:8080/get/buckets/<i>bucketName</i>/?filter=<i>jsonObjToMatch</i>&callback=<i>callbackFunc</i></div>
-  ...or filter through '*' or the empty object {} to fetch all objects from a bucket:
-  <div class="indentedLine"> http://localhost:8080/get/buckets/<i>bucketName</i>/?filter=<i>*</i>&callback=<i>callbackFunc</i>
-</div>
-<div class="indentedLine">
-  http://localhost:8080/get/buckets/<i>bucketName</i>/?filter=<i>{}</i>&callback=<i>callbackFunc</i></div>
-  </div>
   <div class="indentedLine">
   <b>Example</b>
   <div class="indentedLine">http://localhost:8080/get/kind/myFoo/?filter={"foo":"bar2"}&callback=func</div>
   <b>Response:</b>
   <div class="indentedLine">func([{"foo":"bar2","baz":10}]);</div>
   </div>
+  </div>
 
+<a id="CURLAPI"><h1>CURL API</h1></a>
+
+  <h3>Storing data:</h3>
+
+  <div class="indentedLine"><pre>curl -g 'http://<i>server</i>/put/buckets/<i>bucketName</i>/<i>jsonObj</i>'</i></pre></div>
+  
+  <div class="indentedLine">
+  <b>Example:</b>
+  <div class="indentedLine">curl -g 'http://localhost:8080/put/buckets/contact/{"name":"Dora","age":47,"phone":["661-1635","661-1638"]}'</div>
+
+  <b>Response:</b>
+  <div class="indentedLine">ahJkZXZ-anNvbnAtZGItcmVkdXhyFAsSB2NvbnRhY3QYgICAgICA0AkM <small> (item key is unique to this object)</small></div>
+  </div>
+  
+
+
+  <h3>Retrieve by item key:</h3>
+  <div class="indentedLine">curl http://<i>server</i>/get/keys/<i>itemKey</i></div>
+  <div class="indentedLine">
+  <b>Example:</b>
+  <div class="indentedLine" style="
+    font-size: smaller;
+">curl http://localhost:8080/get/keys/ahJkZXZ-anNvbnAtZGItcmVkdXhyFAsSB2NvbnRhY3QYgICAgICAoAkM</div>
+  <b>Response:</b>
+  <div class="indentedLine">{"phone": ["462-2929", "462-296"], "age": 1, "name": "Sade"}</div>
+  </div>
+
+
+  <h3>Retrieve all items in a bucket:</h3>
+  <div class="indentedLine">http://localhost:8080/get/buckets/<i>bucketName</i>/?callback=<i>callbackFunc</i></div>
+  <div class="indentedLine">
+  <b>Example:</b>
+  <div class="indentedLine">http://localhost:8080/get/buckets/myFoo/?callback=func</div>
+  <b>Response:</b>
+  <div class="indentedLine">func([{"foo":"bar","baz":9},{"foo":"bar2","baz":10}]);</div>
+  </div>
+
+  <h3>Retrieve specific items by query (within a bucket)</h3>
+  <div class="indentedLine">
+  You pass an object - all fields will have to match:
+  <div class="indentedLine">http://localhost:8080/get/buckets/<i>bucketName</i>/?filter=<i>jsonObjToMatch</i>&callback=<i>callbackFunc</i></div>
+  <div class="indentedLine">
+  <b>Example</b>
+  <div class="indentedLine">http://localhost:8080/get/kind/myFoo/?filter={"foo":"bar2"}&callback=func</div>
+  <b>Response:</b>
+  <div class="indentedLine">func([{"foo":"bar2","baz":10}]);</div>
+  </div>
+  </div>
 
   <a id="DataPrivacy"><h1>Data privacy (or lack thereof)</h1></a>
   <div id="content">
@@ -147,7 +183,6 @@
 
 
 	<a id="Demo"><h1><h1>Demo</h1></h1>
-  <div class="line-separator"></div>
 
 <b>1.</b> Pick which server to use:
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -305,7 +340,8 @@ Response:<br><textarea id="step5response" rows="5" cols="45"></textarea>
 <li>updated to make it work again with the current Google App Engine python framework</li>
 <li>changed/renamed the concepts of storeKey, itemKey, key</li>
 <li>almost REST-like api</li>
-<li>fetching items by key doesn't need the bucket name to be specified.</li>
+<li>fetching objects by key doesn't need the bucket name to be specified</li>
+<li>fetching all obbjects in a bucket doesn't need any filter</li>
 </ul>
   </div>
 
@@ -546,7 +582,8 @@ var people = [{first:'Lee',last:'Michael',phone:'461-0898'},{first:'Burton',last
 	<li><a href="#Preliminaries" title="Preliminaries">Preliminaries</a></li>
   <li><a href="#Goodfor" title="good for...">What is it good for?</a></li>
   <li><a href="#Principles" title="general principles">General principles</a></li>
-  <li><a href="#API" title="API">API</a></li>
+  <li><a href="#JSONPAPI" title="JSONP API">JSONP API</a></li>
+  <li><a href="#CURLAPI" title="Curl API">Curl API</a></li>
   <li><a href="#DataPrivacy" title="Data privacy">Data privacy</a></li>
   <li><a href="#Demo" title="Demo">Demo</a></li>
   <li><a href="#Differences" title="differences with original project">Differences with original project</a></li>
