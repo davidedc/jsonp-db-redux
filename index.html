@@ -70,7 +70,7 @@
 
   <h1>What's the general principle?</h1> 
   <div id="content">
-<p>To store a JSON object, just send it to the server together with a "bucket" name and a callback. The bucket name can be used to group (and fetch) together objects of the same kind, you can invent as many bucket names as the types of data you are going to store. So if you want to store something like {first:'Maggie',last:'Lynch',phone:'884-7839'} then you are probably going to give it the bucket of "contact" and issue a request like this: bucket=contact&json={first:'Maggie',last:'Lynch',phone:'884-7839'}&callback=some-function. You are going to get a "key" as a response, which can be used to retrieve the object. Precise examples below. You'll use the bucket name to retrieve objects of the same kind as per examples below.</p>
+<p>To store a JSON object, just send it to the server together with a "bucket" name and a callback. The bucket name can be used to group (and fetch) together objects of the same kind, you can invent as many bucket names as the types of data you are going to store. So if you want to store something like {first:'Maggie',last:'Lynch',phone:'884-7839'} then you are probably going to give it the bucket of "contact" and issue a request like this: bucket=contact/{first:'Maggie',last:'Lynch',phone:'884-7839'}?callback=some-function. You are going to get a "key" as a response, which can be used to retrieve the object. Precise examples below. You'll use the bucket name to retrieve objects of the same kind as per examples below.</p>
 <p>To retrieve: you can either a) use the key returned by the store operation or b) retrieve all objects in a bucket or c) retrieve all objects (from a bucket) having one or more field values you specify.</p>
   </div>
 
@@ -151,7 +151,7 @@
 
 <b>1.</b> Pick which server to use:
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script type="text/javascript" src="jquery.noty.packaged.min.js"></script>
+<script type="text/javascript" src="jslibs/jquery.noty.packaged.min.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.min.js"></script>noty({text: 'noty - a jquery notification library!'});
 
 
