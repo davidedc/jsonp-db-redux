@@ -72,11 +72,11 @@
 
   <h3>Storing data:</h3>
 
-  <div class="indentedLine">http://localhost:8080/put/buckets/<i>bucketName</i>/<i>jsonObj</i>?callback=<i>callbackFunc</i></div>
+  <div class="indentedLine">http://<i>serverName</i>/put/buckets/<i>bucketName</i>/<i>jsonObj</i>?callback=<i>callbackFunc</i></div>
   
   <div class="indentedLine">
   <b>Example:</b>
-  <div class="indentedLine">http://localhost:8080/put/buckets/myFoo/{"foo":"bar","baz":9}?callback=func</div>
+  <div class="indentedLine">http://jsonp-db-redux.appspot.com/put/buckets/myFoo/{"foo":"bar","baz":9}?callback=func</div>
 
   <b>Response:</b>
   <div class="indentedLine">func('agNpZWRyDQsSB2NvbnRhY3QYAQw'); <small> (item key is unique to this object)</small></div>
@@ -85,22 +85,22 @@
 
 
   <h3>Retrieve by item key:</h3>
-  <div class="indentedLine">http://localhost:8080/get/keys/<i>itemKey</i>?callback=<i>callbackFunc</i></div>
+  <div class="indentedLine">http://<i>serverName</i>/get/keys/<i>itemKey</i>?callback=<i>callbackFunc</i></div>
   <div class="indentedLine">
   <b>Example:</b>
   <div class="indentedLine" style="
     font-size: smaller;
-">http://localhost:8080/get/keys/agNpZWRyDQsSB2NvbnRhY3QYAQw?callback=func</div>
+">http://jsonp-db-redux.appspot.com/get/keys/agNpZWRyDQsSB2NvbnRhY3QYAQw?callback=func</div>
   <b>Response:</b>
   <div class="indentedLine">func({"foo":"bar","baz":9});</div>
   </div>
 
 
   <h3>Retrieve all items in a bucket:</h3>
-  <div class="indentedLine">http://localhost:8080/get/buckets/<i>bucketName</i>/?callback=<i>callbackFunc</i></div>
+  <div class="indentedLine">http://<i>serverName</i>/get/buckets/<i>bucketName</i>/?callback=<i>callbackFunc</i></div>
   <div class="indentedLine">
   <b>Example:</b>
-  <div class="indentedLine">http://localhost:8080/get/buckets/myFoo/?callback=func</div>
+  <div class="indentedLine">http://jsonp-db-redux.appspot.com/get/buckets/myFoo/?callback=func</div>
   <b>Response:</b>
   <div class="indentedLine">func([{"foo":"bar","baz":9},{"foo":"bar2","baz":10}]);</div>
   </div>
@@ -108,10 +108,10 @@
   <h3>Retrieve specific items by query (within a bucket)</h3>
   <div class="indentedLine">
   You pass an object - all fields will have to match:
-  <div class="indentedLine">http://localhost:8080/get/buckets/<i>bucketName</i>/?filter=<i>jsonObjToMatch</i>&callback=<i>callbackFunc</i></div>
+  <div class="indentedLine">http://<i>serverName</i>/get/buckets/<i>bucketName</i>/?filter=<i>jsonObjToMatch</i>&callback=<i>callbackFunc</i></div>
   <div class="indentedLine">
   <b>Example</b>
-  <div class="indentedLine">http://localhost:8080/get/kind/myFoo/?filter={"foo":"bar2"}&callback=func</div>
+  <div class="indentedLine">http://jsonp-db-redux.appspot.com/get/kind/myFoo/?filter={"foo":"bar2"}&callback=func</div>
   <b>Response:</b>
   <div class="indentedLine">func([{"foo":"bar2","baz":10}]);</div>
   </div>
@@ -121,35 +121,35 @@
 
   <h3>Storing data:</h3>
 
-  <div class="indentedLine"><pre>curl -g 'http://<i>server</i>/put/buckets/<i>bucketName</i>/<i>jsonObj</i>'</i></pre></div>
+  <div class="indentedLine"><pre>curl -g 'http://<i>serverName</i>/put/buckets/<i>bucketName</i>/<i>jsonObj</i>'</i></pre></div>
   
   <div class="indentedLine">
   <b>Example:</b>
-  <div class="indentedLine">curl -g 'http://localhost:8080/put/buckets/contact/{"name":"Dora","age":47,"phone":["661-1635","661-1638"]}'</div>
+  <div class="indentedLine">curl -g 'http://jsonp-db-redux.appspot.com/put/buckets/contact/{"name":"Dora","age":47,"phone":["661-1635","661-1638"]}'</div>
 
   <b>Response:</b>
-  <div class="indentedLine">ahJkZXZ-anNvbnAtZGItcmVkdXhyFAsSB2NvbnRhY3QYgICAgICA0AkM <small> (item key is unique to this object)</small></div>
+  <div class="indentedLine">ahJkZXZ-anNvbnAtZGItcmVkdXhyFAsSB2NvbnRhY3QYgICAgICAsAkM<small> (item key is unique to this object)</small></div>
   </div>
   
 
 
   <h3>Retrieve by item key:</h3>
-  <div class="indentedLine">curl http://<i>server</i>/get/keys/<i>itemKey</i></div>
+  <div class="indentedLine">curl http://<i>serverName</i>/get/keys/<i>itemKey</i></div>
   <div class="indentedLine">
   <b>Example:</b>
   <div class="indentedLine" style="
     font-size: smaller;
-">curl http://localhost:8080/get/keys/ahJkZXZ-anNvbnAtZGItcmVkdXhyFAsSB2NvbnRhY3QYgICAgICAoAkM</div>
+">curl http://jsonp-db-redux.appspot.com/get/keys/ahJkZXZ-anNvbnAtZGItcmVkdXhyFAsSB2NvbnRhY3QYgICAgICAsAkM</div>
   <b>Response:</b>
-  <div class="indentedLine">{"phone": ["462-2929", "462-296"], "age": 1, "name": "Sade"}</div>
+  <div class="indentedLine">{"phone": ["661-1635", "661-1638"], "name": "Dora", "age": 47}</div>
   </div>
 
 
   <h3>Retrieve all items in a bucket:</h3>
-  <div class="indentedLine">curl http://<i>server</i>/get/buckets/<i>bucketName</i>/</div>
+  <div class="indentedLine">curl http://<i>serverName</i>/get/buckets/<i>bucketName</i>/</div>
   <div class="indentedLine">
   <b>Example:</b>
-  <div class="indentedLine">curl http://localhost:8080/get/buckets/contact/</div>
+  <div class="indentedLine">curl http://jsonp-db-redux.appspot.com/get/buckets/contact/</div>
   <b>Response:</b>
   <div class="indentedLine">[{"phone": ["661-1635", "661-1638"], "name": "Dora", "age": 47}, {"phone": ["896-48722", "896-48...</div>
   </div>
@@ -160,7 +160,7 @@
   <div class="indentedLine"><pre>curl -g 'http://<i>serverName</i>/get/buckets/<i>bucketName</i>/?filter=<i>JSONObject</i>'</pre></div>
   <div class="indentedLine">
   <b>Example</b>
-  <div class="indentedLine">curl -g 'http://localhost:8080/get/buckets/contact/?filter={"name":"Dora"}'</div>
+  <div class="indentedLine">curl -g 'http://jsonp-db-redux.appspot.com/get/buckets/contact/?filter={"name":"Dora"}'</div>
   <b>Response:</b>
   <div class="indentedLine">[{"phone": ["661-1635", "661-1638"], "age": 47, "name": "Dora"}, {"phone": ["661-1635", "661-1638"], "age": 47, "name": "Dora"}, {"phone": ["661-1635", "661-1638"], "age": 47, "name": "Dora"}, {"phone": ["661-1635", "661-1638"], "age": 47, "name": "Dora"}, {"p...</div>
   </div>
