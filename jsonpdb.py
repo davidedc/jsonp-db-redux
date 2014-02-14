@@ -96,40 +96,44 @@ class GetWithKey(webapp2.RequestHandler):
 class GetWithFilter(webapp2.RequestHandler):
   def get(self,className):
     
+    classString = str(self.request.get('filter') )
+    logging.debug('filter: ' + classString)
+    if classString == '':
+        #Process get request for all objects of a type
+        objEntity = createEntity(className, None)
+        query = objEntity.all()
+        objArr = list()
+        for ent in query:
+            objDict = dict()
+            for k in ent.__dict__["_entity"].keys():
+                    objDict[str(k)] = json.loads(ent.__dict__["_entity"][k])
+            objArr.append(objDict)
+        objectDump = json.dumps(objArr)
+    else:
+        jsonStr = urllib.unquote(classString)
+        jsonObj = json.loads(jsonStr)
+        objEntity = createEntity(className, jsonObj)
+        query = objEntity.all()
+        #Querying based on filtered information for an object
+        #Loop through the keys sent in the object and add query filters
+        
+        for k in jsonObj.keys():
+            query.filter(str(k) + " =", json.dumps(jsonObj.get(k)))
+        
+        #Return results
+        objArr = list()
+        for ent in query:
+            objDict = dict()
+            for k in ent.__dict__["_entity"].keys():
+                    objDict[str(k)] = json.loads(ent.__dict__["_entity"][k])
+            objArr.append(objDict)
+        objectDump = json.dumps(objArr)
+
     if self.request.get('callback'):
-        classString = str(self.request.get('filter') )
-        logging.debug('filter: ' + classString)
-        if classString == '':
-            #Process get request for all objects of a type
-            objEntity = createEntity(className, None)
-            query = objEntity.all()
-            objArr = list()
-            for ent in query:
-                objDict = dict()
-                for k in ent.__dict__["_entity"].keys():
-                        objDict[str(k)] = json.loads(ent.__dict__["_entity"][k])
-                objArr.append(objDict)
-            self.response.out.write(str(self.request.get('callback')) + "(" + json.dumps(objArr) + ");")
-        else:
-            jsonStr = urllib.unquote(classString)
-            jsonObj = json.loads(jsonStr)
-            objEntity = createEntity(className, jsonObj)
-            query = objEntity.all()
-            #Querying based on filtered information for an object
-            #Loop through the keys sent in the object and add query filters
-            
-            for k in jsonObj.keys():
-                query.filter(str(k) + " =", json.dumps(jsonObj.get(k)))
-            
-            #Return results
-            objArr = list()
-            for ent in query:
-                objDict = dict()
-                for k in ent.__dict__["_entity"].keys():
-                        objDict[str(k)] = json.loads(ent.__dict__["_entity"][k])
-                objArr.append(objDict)
-            
-            self.response.out.write(str(self.request.get('callback')) + "(" + json.dumps(objArr) + ");")
+        self.response.out.write(str(self.request.get('callback')) + "(" + objectDump + ");")
+    else:
+        self.response.out.write(objectDump)
+
 
 # strip this whole class for no auto cleanup
 class WhenLastCleaned(webapp2.RequestHandler):

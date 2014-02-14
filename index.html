@@ -146,23 +146,23 @@
 
 
   <h3>Retrieve all items in a bucket:</h3>
-  <div class="indentedLine">http://localhost:8080/get/buckets/<i>bucketName</i>/?callback=<i>callbackFunc</i></div>
+  <div class="indentedLine">curl http://<i>server</i>/get/buckets/<i>bucketName</i>/</div>
   <div class="indentedLine">
   <b>Example:</b>
-  <div class="indentedLine">http://localhost:8080/get/buckets/myFoo/?callback=func</div>
+  <div class="indentedLine">curl http://localhost:8080/get/buckets/contact/</div>
   <b>Response:</b>
-  <div class="indentedLine">func([{"foo":"bar","baz":9},{"foo":"bar2","baz":10}]);</div>
+  <div class="indentedLine">[{"phone": ["661-1635", "661-1638"], "name": "Dora", "age": 47}, {"phone": ["896-48722", "896-48...</div>
   </div>
 
   <h3>Retrieve specific items by query (within a bucket)</h3>
   <div class="indentedLine">
   You pass an object - all fields will have to match:
-  <div class="indentedLine">http://localhost:8080/get/buckets/<i>bucketName</i>/?filter=<i>jsonObjToMatch</i>&callback=<i>callbackFunc</i></div>
+  <div class="indentedLine"><pre>curl -g 'http://<i>serverName</i>/get/buckets/<i>bucketName</i>/?filter=<i>JSONObject</i>'</pre></div>
   <div class="indentedLine">
   <b>Example</b>
-  <div class="indentedLine">http://localhost:8080/get/kind/myFoo/?filter={"foo":"bar2"}&callback=func</div>
+  <div class="indentedLine">curl -g 'http://localhost:8080/get/buckets/contact/?filter={"name":"Dora"}'</div>
   <b>Response:</b>
-  <div class="indentedLine">func([{"foo":"bar2","baz":10}]);</div>
+  <div class="indentedLine">[{"phone": ["661-1635", "661-1638"], "age": 47, "name": "Dora"}, {"phone": ["661-1635", "661-1638"], "age": 47, "name": "Dora"}, {"phone": ["661-1635", "661-1638"], "age": 47, "name": "Dora"}, {"phone": ["661-1635", "661-1638"], "age": 47, "name": "Dora"}, {"p...</div>
   </div>
   </div>
 
