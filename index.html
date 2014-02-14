@@ -47,7 +47,7 @@
 </div>
 <div id="content_hold">
 
-  <h1>Preliminaries</h1> 
+  <a id="Preliminaries"><h1>Preliminaries</h1></a>
   <div id="content">
     <p>JSON-P DB Redux is the resurrection, update and a slight modification of the abandoned <a href="http://jsonpdb.appspot.com/index.html">JSON-P DB</a> project by <a href="https://plus.google.com/+AdamRibaudo/posts">Adam Ribaudo</a> and <a href="https://plus.google.com/+PaulIrish/posts">Paul Irish</a>.</p>
   </div>
@@ -151,7 +151,8 @@
 
 <b>1.</b> Pick which server to use:
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.min.js"></script>
+<script type="text/javascript" src="jquery.noty.packaged.min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.min.js"></script>noty({text: 'noty - a jquery notification library!'});
 
 
 <select style="width:100%"  id="e9">
@@ -192,6 +193,35 @@ $(document).ready(function() {
 
 });
 
+
+$.noty.defaults = {
+    layout: 'bottom',
+    theme: 'defaultTheme',
+    type: 'error',
+    text: '', // can be html or string
+    dismissQueue: false, // If you want to use queue feature set this true
+    template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+    animation: {
+        open: {height: 'toggle'},
+        close: {height: 'toggle'},
+        easing: 'swing',
+        speed: 500 // opening & closing animation speed
+    },
+    timeout: false, // delay for closing event. Set false for sticky notifications
+    force: false, // adds notification to the beginning of queue when set to true
+    modal: false,
+    maxVisible: 1, // you can set max visible notification for dismissQueue true option,
+    killer: false, // for close all notifications before show
+    closeWith: ['click'], // ['click', 'button', 'hover']
+    callback: {
+        onShow: function() {},
+        afterShow: function() {},
+        onClose: function() {},
+        afterClose: function() {}
+    },
+    buttons: false // an array of buttons
+};
+
 function addInputBox() {
 
   $(".select2-search, .select2-focusser").remove();
@@ -221,7 +251,7 @@ addInputBox();
 </script>
 
 
-<div class="rowTitle"><b>2.</b> Create an object:</div>
+<div class="rowTitle"><b>2.</b> Create object:</div>
 <textarea id="step1" rows="5" cols="45"  style="height: 33px;">contact = {
   name : "Jesper",
   age : 22,
@@ -231,7 +261,7 @@ addInputBox();
 <input type="button" id="eval1" value="Create" />
 
 <br>
-<div class="rowTitle"><b>3.</b> Store the object:</div>
+<div class="rowTitle"><b>3.</b> Store object:</div>
 <textarea id="step2" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/put/buckets/contact/'+JSON.stringify(contact)+'?callback=?', function(data){    $("#step2response").val(data);
 });</textarea>
 <br>
@@ -240,7 +270,7 @@ addInputBox();
 Response:<br><textarea id="step2response" rows="1" cols="45"></textarea>
 
 <br>
-<div class="rowTitle"><b>4.</b> Retrieve your object by key:</div>
+<div class="rowTitle"><b>4.</b> Retrieve object by key:</div>
 <textarea id="step3" style="height: 82px;" >$.getJSON('http://'+selected_server+'/get/keys/'+$("#step2response").val()+'?callback=?', function(data){
   $("#step3response").val(JSON.stringify(data));
 });</textarea>
@@ -250,8 +280,8 @@ Response:<br><textarea id="step2response" rows="1" cols="45"></textarea>
 Response:<br><textarea id="step3response" rows="3" cols="45"></textarea>
 
 <br>
-<div class="rowTitle"><b>5.</b> Retrieve all objects of a specific type:</div>
-<textarea id="step4" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/get/buckets/contact/?filter=*&callback=?', function(data){
+<div class="rowTitle"><b>5.</b> Retrieve all objects in a bucket:</div>
+<textarea id="step4" rows="4" cols="45" >$.getJSON('http://'+selected_server+'/get/buckets/contact/?callback=?', function(data){
   $("#step4response").val(JSON.stringify(data));
 });</textarea>
 <br>
@@ -260,7 +290,7 @@ Response:<br><textarea id="step3response" rows="3" cols="45"></textarea>
 Response:<br><textarea id="step4response" rows="5" cols="45"></textarea>
 
 <br>
-<div class="rowTitle"><b>6.</b> Retrieve based on criteria:</div>
+<div class="rowTitle"><b>6.</b> Retrieve based on equality criteria from a bucket:</div>
 <textarea id="step5"  style="height: 82px;" >$.getJSON('http://'+selected_server+'/get/buckets/contact/?filter={"name":"Cherokee"}&callback=?', function(data){
   $("#step5response").val(JSON.stringify(data));
 });</textarea>
@@ -402,6 +432,18 @@ var countdown = document.getElementById("countdown");
     // find the amount of "seconds" between now and target
     var current_date = new Date().getTime();
     var seconds_left = (target_date - current_date) / 1000;
+
+    if (seconds_left <= 2) {
+      clearInterval(timerInterval);
+      var new_target_date = new Date();
+      new_target_date = new_target_date.setSeconds(new_target_date.getSeconds() + numberOfMinutesBetweenRetries*60 + 2);
+      showCountdown(new_target_date);
+    }
+
+    if (seconds_left <= 2) {
+      noty({text: 'server content has been cleared'});
+    }
+
  
     // do some time calculations
     days = parseInt(seconds_left / 86400);
@@ -417,14 +459,8 @@ var countdown = document.getElementById("countdown");
     countdown.innerHTML = "all server content will be cleared in: " + hours + "h, "
     + minutes + "m, " + seconds + "s";  
 
-    if (seconds_left <= 2) {
-      clearInterval(timerInterval);
-      var new_target_date = new Date();
-      new_target_date = new_target_date.setSeconds(new_target_date.getSeconds() + numberOfMinutesBetweenRetries*60 + 2);
-      showCountdown(new_target_date);
 
-    }
- 
+
 }, 1000);
 
 
@@ -497,23 +533,25 @@ var people = [{first:'Lee',last:'Michael',phone:'461-0898'},{first:'Burton',last
 	</div>
 
 <div id="sidebar">
-<div id="sidebarTitle"><span class="text">GET GLOW</span></div>
+<div id="sidebarTitle"><span class="text">Get JSON-P DB Redux</span></div>
 <ul>
-	<li><a href="http://www.github.com/empaempa/GLOW/">Here</a></li>
+	<li><a href="http://www.github.com/davidedc/">Here</a></li>
 </ul>
 <div id="sidebarTitle"><span class="text">COMMENT</span></div>
 <ul>
-	<li><a href="https://github.com/empaempa/GLOW/issues">Here</a></li>
+	<li><a href="https://github.com/davidedc/">Here</a></li>
 </ul>
 
-<div id="sidebarTitle"><span class="text">TUTORIALS</span></div>
+<div id="sidebarTitle"><span class="text">Sections</span></div>
 <ul>
-	<li class="page_item page-item-2"><a href="http://i-am-glow.com/?page_id=2" title="Hello Cube!">Hello Cube!</a></li>
-<li class="page_item page-item-183"><a href="http://i-am-glow.com/?page_id=183" title="Hello FBO Simulation">Hello FBO Simulation</a></li>
-<li class="page_item page-item-61"><a href="http://i-am-glow.com/?page_id=61" title="Hello Clone!">Hello Clone!</a></li>
-<li class="page_item page-item-75"><a href="http://i-am-glow.com/?page_id=75" title="Hello Three.js">Hello Three.js</a></li>
-<li class="page_item page-item-96"><a href="http://i-am-glow.com/?page_id=96" title="Hello FBO">Hello FBO</a></li>
-<li class="page_item page-item-173"><a href="http://i-am-glow.com/?page_id=173" title="Hello Textures!">Hello Textures!</a></li>
+	<li><a href="#Preliminaries" title="Preliminaries">Preliminaries</a></li>
+  <li><a href="#Goodfor" title="good for...">What is it good for?</a></li>
+  <li><a href="#Principles" title="general principles">General principles</a></li>
+  <li><a href="#API" title="API">General principles</a></li>
+  <li><a href="#DataPrivacy" title="Data privacy">Data privacy</a></li>
+  <li><a href="#Demo" title="Demo">Demo</a></li>
+  <li><a href="#Differences" title="differences with original project">Differences with original project</a></li>
+  <li><a href="#Notes" title="implementation notes">Implementation notes</a></li>
 </ul>
 
 
