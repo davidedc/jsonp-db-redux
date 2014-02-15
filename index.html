@@ -35,7 +35,7 @@
 <div id="title"><span class="blog_title">JSON-P DB Redux</span></div>
 <div id="about">
 	
-    JSON-P DB Redux is a Google App Engine app to persist/retrieve JSON objects via simple client-side javascript <a href="http://www.json.com/2007/12/24/jsonp-header-transfer-proposal/">JSON-P</a> calls. Curl also supported.
+    JSON-P DB Redux is a minimal Google App Engine app to persist/retrieve JSON objects via simple client-side javascript <a href="http://www.json.com/2007/12/24/jsonp-header-transfer-proposal/">JSON-P</a> calls. Curl also supported.
 
 </div>
 </div>
@@ -355,6 +355,7 @@ Response:<br><textarea id="step5response" rows="5" cols="45"></textarea>
     <p>Each bucket is a datastore <a href="https://developers.google.com/appengine/docs/python/datastore/entities#Python_Kinds_and_identifiers">kind</a> (similar to a table of traditional databases). While queries by key don't need the bucket to be specified (because the kind is encoded in the key), the other queries only operate within a particular kind, so they need the bucket to be specified.</p>
     <p>Each JSON object is stored as a datastore <a href="https://developers.google.com/appengine/docs/python/datastore/entities">entity</a> (similar to a record of a traditional database), with separate <a href="https://developers.google.com/appengine/docs/python/datastore/entities#Python_Properties_and_value_types">properties</a> for each of the JSON object name/value pairs. This very fact that each key/value JSON pair is stored as a separate property of the entity is what makes the filtering by name/value identity(ies) possible.</p>
     <p><strong>Why no exploding indexes?</strong> You might be wondering, since each object can have an arbitrary number of (different) key/value pairs and the filtering allows you to filter by identity of any number of key/values, how can that efficiently be done without exploding indexes? The answer in a special Merge-join technicnique that works "well enough" in most cases. You could potentially get a "NeedIndexError", but this is rare for any practical/compact data set. See <a href="http://www.allbuttonspressed.com/blog/django/2010/01/An-App-Engine-limitation-you-didn-t-know-about">this article</a> for an analysis.</p>
+    <p><strong>Why JSONP instead of CORS?</strong> No particular reason, JSONP was used in the original project and works OK. Should be no biggie to modify to use CORS.</p>
   </div>
     
     
@@ -609,7 +610,7 @@ var people = [{first:'Lee',last:'Michael',phone:'461-0898'},{first:'Burton',last
 	<li><a href="https://twitter.com/davidedc">Davide Della Casa</a></li>
 </ul>
 <div id="sidebarTitle"><span class="text">Credits</span></div>
-<p>Fancy server dropdown:<strong><a href="http://ivaynberg.github.io/select2/">Select2</a></strong> (by <strong><a href="https://twitter.com/ivaynberg">Igor Vaynberg</a></strong>.)</p>
+<p>Fancy server-selection dropdown: <strong><a href="http://ivaynberg.github.io/select2/">Select2</a></strong> (by <strong><a href="https://twitter.com/ivaynberg">Igor Vaynberg</a></strong>.)</p>
 <p>Notification library: <strong><a href="http://ned.im/noty/">Noty</a></strong> (by <strong><a href="https://twitter.com/needim">Nedim Arabaci</a></strong>.)</p>
 <p>Page theme: <strong><a href="http://p41studios.com/">Angebot by P41 Studios</a></strong> (via <strong><a href="http://i-am-glow.com/">I am glow</a></strong> project.)</p>
 
