@@ -72,6 +72,8 @@
 
   <h3>Storing data:</h3>
 
+  <div class="indentedLine"><strong>Note:</strong> adding objects is not idempotent: adding the same object twice will result in two entries (with the same content) with two different keys.</div>
+
   <div class="indentedLine">http://<i>serverName</i>/put/buckets/<i>bucketName</i>/<i>jsonObj</i>?callback=<i>callbackFunc</i></div>
   
   <div class="indentedLine">
@@ -120,6 +122,8 @@
 <a id="CURLAPI"><h1>CURL API</h1></a>
 
   <h3>Storing data:</h3>
+
+  <div class="indentedLine"><strong>Note:</strong> adding objects is not idempotent: adding the same object twice will result in two entries (with the same content) with two different keys.</div>
 
   <div class="indentedLine"><pre>curl -g 'http://<i>serverName</i>/put/buckets/<i>bucketName</i>/<i>jsonObj</i>'</i></pre></div>
   
@@ -354,42 +358,13 @@ Response:<br><textarea id="step5response" rows="5" cols="45"></textarea>
   </div>
     
     
-    <h2>Did we mention... ?</h2>
+    <h1>Limitations/notes</h1>
 
-<ol>
-<li>  Anyone can access this datastore.  That means that anyone can read the objects you've created as long as they know your object's name.</li>
-<li>The name of the first parameter of the GET request must always be the object's storeKey.</li>
-<li>storeKey's should be alphanumberic, but . is also allowed</li>
+<ul>
 <li>  Querying for a set of objects will only work on that object's 1st level parameters.  That means that if you have an object named "contact" you can search based on contact.country but NOT contact.country.city</li>
 <li>The amount of data is limited by how long the URL can be. This <a href="http://www.boutell.com/newfaq/misc/urllength.html">varies by browser</a>.
-</ol>
-
-<h2>So what?</h2>
-You could use this as...
-<ul>
-  <li>A persistent storage mechanism in your Greasemonkey scripts</li>
-  <li>A cross-domain messaging system</li>
-  <li>A database for javascript developers that can't do serverside work</li>
-  <li>A messageboard, forum, digg clone, wiki, blog, facebook-clone, whatever. </li>
+<li>  Stored objects can't be updated/deleted. This is not for any particular technical reason but rather because of minimalism of the implementation.</li>
 </ul>
-
-<h2>Who?</h2>
-<ul>
-  <li><strong> Adam Ribado: </strong>Architecture and Python.</li>
-  <li><strong> Paul Irish: </strong>Concept, HTML, and Javascript.</li>
-  <li> <a href="mailto:ied.datastore@gmail.com">ied.datastore@gmail.com</a></li>
-</ul>
-
-
-
-  
-<h3>Debug:</h3>
-<div>
-  <p>View the contents of: <input id="debugvalue" type="text"/><input type="button" value="go"/></p>
-  <textarea rows="5" cols="45"></textarea>
-  <span><button id="debugbutton">Visual View</button></span>
-</div>
-    
 
 
 
