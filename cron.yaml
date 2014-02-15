@@ -1,4 +1,5 @@
-# strip the whole file for no auto cleanup
+# delete this file if you don't need
+# automatic cleanup of the datastore
 
 cron:
 - description: cleanup of the DataStore
