@@ -8,7 +8,7 @@ Theme Description: An experimental theme by <a href="http://p41studios.com">P41 
 /* ffff3d */
 
 body {font:normal 11pt/16pt Arial, Helvetica, Sans-serif;color:#000;margin:0;padding:0;}
-a, a:visited, a:hover {color:#000;text-decoration:none;outline:none;}
+a, a:visited, a:hover {color:#000;outline:none;}
 
 #grid_hold {width:900px;margin:3.8em auto;}
 #header {width:900px;margin:0 auto;}
