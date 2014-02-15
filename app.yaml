@@ -1,4 +1,8 @@
+
+# change this to whatever app name
+# you set up on Google App Engine
 application: jsonp-db-redux
+
 version: 1
 api_version: 1
 runtime: python27
@@ -19,9 +23,13 @@ handlers:
   script: jsonpdb.py
   login: admin
 
+# needed for the specific icons and styles
+# of the demo page
 - url: /icons-and-styles
   static_dir: icons-and-styles
 
+# needed for the specific js libs
+# of the demo page
 - url: /jslibs
   static_dir: jslibs
 
