@@ -33,5 +33,9 @@ handlers:
 - url: /jslibs
   static_dir: jslibs
 
+# only needed for the images in the doc
+- url: /images
+  static_dir: images
+
 - url: /.*
   script: jsonpdb.py
