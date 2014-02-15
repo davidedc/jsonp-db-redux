@@ -4,4 +4,4 @@ JSON-P DB Redux is the resurrection, modification and extension of the abandoned
 
 This is good for having your own free and highly-hackable server to persist JSON objects from your web projects. Ready in 5 minutes.
 
-Demo is <a href="http://jsonp-db-redux.appspot.com/index.html">here/a>
+Demo is <a href="http://jsonp-db-redux.appspot.com/index.html">here</a>
