@@ -358,15 +358,50 @@ Response:<br><textarea id="step5response" rows="5" cols="45"></textarea>
   </div>
     
     
-    <h1>Limitations/notes</h1>
+    <a id="Limitations"><h1>Limitations</h1></a>
+  <div id="content">
 
 <ul>
 <li>  Querying for a set of objects will only work on that object's 1st level parameters.  That means that if you have an object named "contact" you can search based on contact.country but NOT contact.country.city</li>
 <li>The amount of data is limited by how long the URL can be. This <a href="http://www.boutell.com/newfaq/misc/urllength.html">varies by browser</a>.
 <li>  Stored objects can't be updated/deleted. This is not for any particular technical reason but rather because of minimalism of the implementation.</li>
 </ul>
+</div>
 
+    <a id="Installation"><h1>Installation</h1></a>
+  <div id="content">
 
+After <a href="https://github.com/davidedc/jsonp-keyvalue-store/archive/master.zip">downloading this project from github</a>, do the following:
+
+    <h3>1. Go to Google App Engine page and create application</h3>
+<p>Just go to <a href="https://appengine.google.com/">Google App Engine page</a>, log in and create an application with a name of your choice. You'll have to add this app name to one file later.</p>
+<p><img src="images/1-app-engine-page.png" width="100%" style="border: 0;"></p>
+<p><img src="images/2-app-engine-create-app.png" width="100%" style="border: 0;"></p>
+
+    <h3>2. Download Google App Engine SDK (python version)</h3>
+<p>Just go to <a href="https://developers.google.com/appengine/downloads#Google_App_Engine_SDK_for_Python">this page</a>, download it and install it.</p>
+<p><img src="images/3-download-app-engine-sdk.png" width="100%" style="border: 0;"></p>
+
+    <h3>3. Launch SDK and load this project in it</h3>
+<p>Launch SDK and load this project in it via "Add existing application"</p>
+<p><img src="images/4-add-app-to-local-sdk.png" width="100%" style="border: 0;"></p>
+
+    <h3>4. Change the name of the app in app.yaml file</h3>
+<p>Change the name in "application:" so that it matches the name of the app you created on the Google App Engine page.</p>
+<p><img src="images/5-change-name-of-the-app.png" width="100%" style="border: 0;"></p>
+
+    <h3>5. Delete cron.yaml file if you don't want data to be cleaned up</h3>
+<p><img src="images/6-delete-cron-job-if-needed.png" width="100%" style="border: 0;"></p>
+
+    <h3>6. Try the app locally and upload when done</h3>
+<p>...just hit the run button to run, and the "Deploy" button to deploy.<strong>Note</strong> that cron jobs are not implemented in the local SDK, so you won't be able to try the automatic datastore clean-up. To clean-up the datastore just hit the /cleanAll url (it will prompt you for login, make sure you tick the "as admin" checkbox).</p>
+<p><img src="images/7-run-locally-and-upload-when-done.png" width="100%" style="border: 0;"></p>
+
+    <h3>7. Test from this very page</h3>
+<p>...just add your server name in the dropdown. The server has the form "app-name-you-chose.appspot.com" and you can find it in your Google App Engine dashboard.</p>
+<p><img src="images/8-test-by-typing-your-server-to-list.png" width="100%" style="border: 0;"></p>
+
+</div>
 
 <script type="text/javascript">
 
@@ -564,6 +599,8 @@ var people = [{first:'Lee',last:'Michael',phone:'461-0898'},{first:'Burton',last
   <li><a href="#Demo" title="Demo">Demo</a></li>
   <li><a href="#Differences" title="differences with original project">Differences with original project</a></li>
   <li><a href="#Notes" title="implementation notes">Implementation notes</a></li>
+  <li><a href="#Limitations" title="limitations">Limitations</a></li>
+  <li><a href="#Installation" title="installation notes">Installation</a></li>
 </ul>
 
 
